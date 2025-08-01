@@ -4,6 +4,7 @@ public class Main {
     private static VehicleTree vehicleTree = new VehicleTree();
     private static DriverQueue driverQueue = new DriverQueue();
     private static DeliveryQueue deliveryQueue = new DeliveryQueue();
+    private static MaintenanceScheduler maintenanceScheduler = new MaintenanceScheduler();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -50,11 +51,15 @@ public class Main {
             System.out.println(" 10. View Pending Deliveries");
             System.out.println(" 11. Process Next Delivery");
             System.out.println();
-            System.out.println("MAINTENANCE:");
+            System.out.println("MAINTENANCE MANAGEMENT:");
             System.out.println(" 12. Create Maintenance Record");
-            System.out.println(" 13. Exit");
+            System.out.println(" 13. Schedule Maintenance Task");
+            System.out.println(" 14. View Scheduled Maintenance");
+            System.out.println(" 15. Process Next Maintenance Task");
+            System.out.println(" 16. Check Vehicle Maintenance Due");
+            System.out.println(" 17. Exit");
             System.out.println("=".repeat(60));
-            System.out.print("Please select an option (1-13): ");
+            System.out.print("Please select an option (1-17): ");
 
             int choice = getIntInput();
             
@@ -96,6 +101,18 @@ public class Main {
                     createMaintenanceRecord();
                     break;
                 case 13:
+                    scheduleMaintenanceTask();
+                    break;
+                case 14:
+                    viewScheduledMaintenance();
+                    break;
+                case 15:
+                    processNextMaintenanceTask();
+                    break;
+                case 16:
+                    checkVehicleMaintenanceDue();
+                    break;
+                case 17:
                     System.out.println("Thank you for using Vehicle Tracking System!");
                     System.out.println("Goodbye!");
                     return;
@@ -349,7 +366,97 @@ public class Main {
         System.out.print("Enter Service Type (e.g., Oil Change, Brake Pads, etc.): ");
         String serviceType = scanner.nextLine();
         
-        System.out.print("Enter Cost: $");
+        System.out.print("Enter Cost: GH₵");
+        double cost = getDoubleInput();
+        
+        MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
+        
+        System.out.println("\n✓ Maintenance record created successfully!");
+        maintenance.displayInfo();
+    }
+
+    private static void scheduleMaintenanceTask() {
+        System.out.println("\n=== Schedule Maintenance Task ===");
+        
+        System.out.print("Enter Vehicle Registration Number: ");
+        String vehicleReg = scanner.nextLine().trim();
+        
+        // Verify vehicle exists
+        Vehicle vehicle = vehicleTree.searchByRegistration(vehicleReg);
+        if (vehicle == null) {
+            System.out.println("Error: Vehicle with registration " + vehicleReg + " not found!");
+            return;
+        }
+        
+        System.out.print("Enter Mileage Until Service (lower = higher priority): ");
+        int mileage = getIntInput();
+        
+        if (mileage < 0) {
+            System.out.println("Error: Mileage cannot be negative!");
+            return;
+        }
+        
+        MaintenanceTask task = new MaintenanceTask(vehicleReg, mileage);
+        maintenanceScheduler.addTask(task);
+        
+        System.out.println("\n✓ Maintenance task scheduled successfully!");
+        task.displayInfo();
+        
+        if (mileage <= 1000) {
+            System.out.println("⚠️  WARNING: This vehicle needs urgent maintenance!");
+        } else if (mileage <= 2000) {
+            System.out.println("🔔 NOTICE: This vehicle will need maintenance soon.");
+        }
+    }
+
+    private static void viewScheduledMaintenance() {
+        System.out.println("\n=== Scheduled Maintenance Tasks ===");
+        maintenanceScheduler.showAllTasks();
+    }
+
+    private static void processNextMaintenanceTask() {
+        System.out.println("\n=== Process Next Maintenance Task ===");
+        maintenanceScheduler.processNextTask();
+        
+        if (!maintenanceScheduler.isEmpty()) {
+            System.out.print("\nWould you like to create a maintenance record for this service? (y/n): ");
+            String createRecord = scanner.nextLine();
+            
+            if (createRecord.equalsIgnoreCase("y") || createRecord.equalsIgnoreCase("yes")) {
+                createMaintenanceRecordAfterService();
+            }
+        }
+    }
+
+    private static void checkVehicleMaintenanceDue() {
+        System.out.println("\n=== Vehicle Maintenance Due Check ===");
+        
+        if (maintenanceScheduler.isEmpty()) {
+            System.out.println("No maintenance tasks scheduled.");
+            return;
+        }
+        
+        System.out.println("Current maintenance priorities (lower mileage = higher priority):");
+        System.out.println("=".repeat(60));
+        maintenanceScheduler.showAllTasks();
+        
+        System.out.println("\n🚨 Priority Levels:");
+        System.out.println("   0-500 km:    CRITICAL - Immediate service required");
+        System.out.println("   501-1000 km: HIGH - Service needed soon");
+        System.out.println("   1001-2000 km: MEDIUM - Schedule service");
+        System.out.println("   2000+ km:    LOW - Monitor for future service");
+    }
+
+    private static void createMaintenanceRecordAfterService() {
+        System.out.println("\n=== Create Maintenance Record After Service ===");
+        
+        System.out.print("Enter Service Date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+        
+        System.out.print("Enter Service Type (e.g., Oil Change, Brake Service, etc.): ");
+        String serviceType = scanner.nextLine();
+        
+        System.out.print("Enter Cost: GH₵");
         double cost = getDoubleInput();
         
         MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
