@@ -1,0 +1,33 @@
+=== VEHICLE TRACKING & MAINTENANCE SYSTEM REPORT ===
+Generated on: 2025-08-02T16:14:39.575505200
+===============================================
+
+VEHICLE SUMMARY:
+Total Vehicles: 1
+- Trucks: 1
+- Vans: 0
+- Average Mileage: 15000.00 km
+- Average Fuel Usage: 12.50 L/100km
+
+DRIVER SUMMARY:
+Total Available Drivers: 1
+- Average Experience: 5.0 years
+
+DELIVERY SUMMARY:
+Pending Deliveries: 1
+
+MAINTENANCE SUMMARY:
+Pending Maintenance Tasks: 1
+Most Urgent: Vehicle GT1234-22 (5000 km until service)
+
+DETAILED VEHICLE LIST:
+Reg Number	Type	Mileage	Fuel Usage	Driver ID
+--------------------------------------------------------
+GT1234-22	truck	15000	12.50	DRV001
+
+DETAILED DRIVER LIST:
+Driver ID	Name	Experience	Location
+-------------------------------------------
+DRV001	John Doe	5 years	Accra
+
+=== END OF REPORT ===

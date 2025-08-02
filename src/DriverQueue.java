@@ -46,4 +46,26 @@ public class DriverQueue {
             System.out.println("-----");
         }
     }
+
+    // Get all drivers as an array (for file storage)
+    public Driver[] getAllDrivers() {
+        Driver[] allDrivers = new Driver[count];
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            allDrivers[i] = drivers[index];
+        }
+        return allDrivers;
+    }
+
+    // Check if queue is empty
+    public boolean isEmpty() {
+        return count == 0;
+    }
+
+    // Clear all drivers from queue
+    public void clear() {
+        front = 0;
+        rear = -1;
+        count = 0;
+    }
 }

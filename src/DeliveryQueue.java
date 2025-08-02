@@ -48,8 +48,25 @@ public class DeliveryQueue {
         }
     }
 
+    // Get all deliveries as an array (for file storage)
+    public Delivery[] getAllDeliveries() {
+        Delivery[] allDeliveries = new Delivery[count];
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            allDeliveries[i] = queue[index];
+        }
+        return allDeliveries;
+    }
+
     // Check if the queue is empty
     public boolean isEmpty() {
         return count == 0;
+    }
+
+    // Clear all deliveries from queue
+    public void clear() {
+        front = 0;
+        rear = -1;
+        count = 0;
     }
 }

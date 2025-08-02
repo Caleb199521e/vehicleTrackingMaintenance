@@ -46,4 +46,19 @@ public class MaintenanceScheduler {
     public boolean isEmpty() {
         return taskHeap.isEmpty();
     }
+
+    // Get all maintenance tasks as an array (for file storage)
+    public MaintenanceTask[] getAllTasks() {
+        return taskHeap.toArray(new MaintenanceTask[0]);
+    }
+
+    // Clear all tasks from scheduler
+    public void clear() {
+        taskHeap.clear();
+    }
+
+    // Get the number of pending tasks
+    public int getTaskCount() {
+        return taskHeap.size();
+    }
 }

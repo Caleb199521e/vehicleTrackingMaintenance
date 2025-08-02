@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 
 /**
  * Main class - Vehicle Tracking & Maintenance System
@@ -75,9 +76,14 @@ public class Main {
             System.out.println(" 21. Binary Search by Registration Number");
             System.out.println(" 22. Organize Vehicles by Mileage");
             System.out.println(" 23. Organize Vehicles by Driver Name");
-            System.out.println(" 24. Exit");
+            System.out.println();
+            System.out.println("FILE STORAGE:");
+            System.out.println(" 24. Save All Data to Files");
+            System.out.println(" 25. Load All Data from Files");
+            System.out.println(" 26. Export System Report");
+            System.out.println(" 27. Exit");
             System.out.println("=".repeat(60));
-            System.out.print("Please select an option (1-24): ");
+            System.out.print("Please select an option (1-27): ");
 
             int choice = getIntInput(); // Get user input with validation
             
@@ -153,6 +159,15 @@ public class Main {
                     mergeSortVehiclesByDriverName(); // Merge sort implementation
                     break;
                 case 24:
+                    saveAllDataToFiles(); // Save all data to text files
+                    break;
+                case 25:
+                    loadAllDataFromFiles(); // Load all data from text files
+                    break;
+                case 26:
+                    exportSystemReport(); // Export comprehensive system report
+                    break;
+                case 27:
                     System.out.println("Thank you for using Vehicle Tracking System!");
                     System.out.println("Goodbye!");
                     return;
@@ -984,6 +999,367 @@ public class Main {
                 vehicles[i].mileage,
                 vehicles[i].driverId,
                 vehicles[i].fuelUsage);
+        }
+    }
+
+    // File Storage Methods
+    private static void saveAllDataToFiles() {
+        System.out.println("\n💾 Saving all data to files...");
+        
+        try {
+            // Save vehicles to vehicles.txt
+            saveVehiclesToFile();
+            
+            // Save drivers to drivers.txt
+            saveDriversToFile();
+            
+            // Save deliveries to deliveries.txt
+            saveDeliveriesToFile();
+            
+            // Save maintenance tasks to maintenance.txt
+            saveMaintenanceToFile();
+            
+            System.out.println("✅ All data saved successfully!");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Error saving data: " + e.getMessage());
+        }
+    }
+
+    private static void saveVehiclesToFile() throws IOException {
+        FileWriter writer = new FileWriter("vehicles.txt");
+        PrintWriter pw = new PrintWriter(writer);
+        
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        pw.println("# Vehicle Data - Registration,Type,Mileage,FuelUsage,DriverId");
+        
+        for (Vehicle vehicle : vehicles) {
+            pw.printf("%s,%s,%d,%.2f,%s%n",
+                vehicle.registrationNumber,
+                vehicle.type,
+                vehicle.mileage,
+                vehicle.fuelUsage,
+                vehicle.driverId
+            );
+        }
+        
+        pw.close();
+        writer.close();
+        System.out.println("📄 Vehicles saved to vehicles.txt");
+    }
+
+    private static void saveDriversToFile() throws IOException {
+        FileWriter writer = new FileWriter("drivers.txt");
+        PrintWriter pw = new PrintWriter(writer);
+        
+        Driver[] drivers = driverQueue.getAllDrivers();
+        pw.println("# Driver Data - DriverId,Name,ExperienceYears,CurrentLocation");
+        
+        for (Driver driver : drivers) {
+            pw.printf("%s,%s,%d,%s%n",
+                driver.driverId,
+                driver.name,
+                driver.experienceYears,
+                driver.currentLocation
+            );
+        }
+        
+        pw.close();
+        writer.close();
+        System.out.println("📄 Drivers saved to drivers.txt");
+    }
+
+    private static void saveDeliveriesToFile() throws IOException {
+        FileWriter writer = new FileWriter("deliveries.txt");
+        PrintWriter pw = new PrintWriter(writer);
+        
+        Delivery[] deliveries = deliveryQueue.getAllDeliveries();
+        pw.println("# Delivery Data - PackageId,Origin,Destination,AssignedVehicle,AssignedDriver,ETA");
+        
+        for (Delivery delivery : deliveries) {
+            pw.printf("%s,%s,%s,%s,%s,%s%n",
+                delivery.packageId,
+                delivery.origin,
+                delivery.destination,
+                delivery.assignedVehicle,
+                delivery.assignedDriver,
+                delivery.eta
+            );
+        }
+        
+        pw.close();
+        writer.close();
+        System.out.println("📄 Deliveries saved to deliveries.txt");
+    }
+
+    private static void saveMaintenanceToFile() throws IOException {
+        FileWriter writer = new FileWriter("maintenance.txt");
+        PrintWriter pw = new PrintWriter(writer);
+        
+        MaintenanceTask[] tasks = maintenanceScheduler.getAllTasks();
+        pw.println("# Maintenance Data - VehicleNumber,Mileage");
+        
+        for (MaintenanceTask task : tasks) {
+            pw.printf("%s,%d%n",
+                task.vehicleNumber,
+                task.mileage
+            );
+        }
+        
+        pw.close();
+        writer.close();
+        System.out.println("📄 Maintenance tasks saved to maintenance.txt");
+    }
+
+    private static void loadAllDataFromFiles() {
+        System.out.println("\n📂 Loading all data from files...");
+        
+        try {
+            // Clear existing data
+            vehicleTree = new VehicleTree();
+            driverQueue = new DriverQueue();
+            deliveryQueue = new DeliveryQueue();
+            maintenanceScheduler = new MaintenanceScheduler();
+            
+            // Load data from files
+            loadVehiclesFromFile();
+            loadDriversFromFile();
+            loadDeliveriesFromFile();
+            loadMaintenanceFromFile();
+            
+            System.out.println("✅ All data loaded successfully!");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Error loading data: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Error parsing data: " + e.getMessage());
+        }
+    }
+
+    private static void loadVehiclesFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("vehicles.txt"));
+        String line;
+        int count = 0;
+        
+        while ((line = reader.readLine()) != null) {
+            // Skip comment lines
+            if (line.startsWith("#") || line.trim().isEmpty()) {
+                continue;
+            }
+            
+            String[] parts = line.split(",");
+            if (parts.length == 5) {
+                String registration = parts[0].trim();
+                String type = parts[1].trim();
+                int mileage = Integer.parseInt(parts[2].trim());
+                double fuelUsage = Double.parseDouble(parts[3].trim());
+                String driverId = parts[4].trim();
+                
+                Vehicle vehicle = new Vehicle(registration, type, mileage, fuelUsage, driverId);
+                vehicleTree.insert(vehicle);
+                count++;
+            }
+        }
+        
+        reader.close();
+        System.out.println("📄 Loaded " + count + " vehicles from vehicles.txt");
+    }
+
+    private static void loadDriversFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("drivers.txt"));
+        String line;
+        int count = 0;
+        
+        while ((line = reader.readLine()) != null) {
+            // Skip comment lines
+            if (line.startsWith("#") || line.trim().isEmpty()) {
+                continue;
+            }
+            
+            String[] parts = line.split(",");
+            if (parts.length == 4) {
+                String driverId = parts[0].trim();
+                String name = parts[1].trim();
+                int experienceYears = Integer.parseInt(parts[2].trim());
+                String currentLocation = parts[3].trim();
+                
+                Driver driver = new Driver(driverId, name, experienceYears, currentLocation);
+                driverQueue.enqueue(driver);
+                count++;
+            }
+        }
+        
+        reader.close();
+        System.out.println("📄 Loaded " + count + " drivers from drivers.txt");
+    }
+
+    private static void loadDeliveriesFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("deliveries.txt"));
+        String line;
+        int count = 0;
+        
+        while ((line = reader.readLine()) != null) {
+            // Skip comment lines
+            if (line.startsWith("#") || line.trim().isEmpty()) {
+                continue;
+            }
+            
+            String[] parts = line.split(",");
+            if (parts.length == 6) {
+                String packageId = parts[0].trim();
+                String origin = parts[1].trim();
+                String destination = parts[2].trim();
+                String assignedVehicle = parts[3].trim();
+                String assignedDriver = parts[4].trim();
+                String eta = parts[5].trim();
+                
+                Delivery delivery = new Delivery(packageId, origin, destination, assignedVehicle, assignedDriver, eta);
+                deliveryQueue.enqueue(delivery);
+                count++;
+            }
+        }
+        
+        reader.close();
+        System.out.println("📄 Loaded " + count + " deliveries from deliveries.txt");
+    }
+
+    private static void loadMaintenanceFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("maintenance.txt"));
+        String line;
+        int count = 0;
+        
+        while ((line = reader.readLine()) != null) {
+            // Skip comment lines
+            if (line.startsWith("#") || line.trim().isEmpty()) {
+                continue;
+            }
+            
+            String[] parts = line.split(",");
+            if (parts.length == 2) {
+                String vehicleNumber = parts[0].trim();
+                int mileage = Integer.parseInt(parts[1].trim());
+                
+                MaintenanceTask task = new MaintenanceTask(vehicleNumber, mileage);
+                maintenanceScheduler.addTask(task);
+                count++;
+            }
+        }
+        
+        reader.close();
+        System.out.println("📄 Loaded " + count + " maintenance tasks from maintenance.txt");
+    }
+
+    private static void exportSystemReport() {
+        System.out.println("\n📊 Generating comprehensive system report...");
+        
+        try {
+            FileWriter writer = new FileWriter("system_report.txt");
+            PrintWriter pw = new PrintWriter(writer);
+            
+            // Header
+            pw.println("=== VEHICLE TRACKING & MAINTENANCE SYSTEM REPORT ===");
+            pw.println("Generated on: " + java.time.LocalDateTime.now());
+            pw.println("===============================================\n");
+            
+            // Vehicle Summary
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            pw.println("VEHICLE SUMMARY:");
+            pw.println("Total Vehicles: " + vehicles.length);
+            
+            int trucks = 0, vans = 0;
+            double totalMileage = 0, totalFuelUsage = 0;
+            
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.type.equalsIgnoreCase("truck")) trucks++;
+                else if (vehicle.type.equalsIgnoreCase("van")) vans++;
+                totalMileage += vehicle.mileage;
+                totalFuelUsage += vehicle.fuelUsage;
+            }
+            
+            pw.println("- Trucks: " + trucks);
+            pw.println("- Vans: " + vans);
+            if (vehicles.length > 0) {
+                pw.printf("- Average Mileage: %.2f km%n", totalMileage / vehicles.length);
+                pw.printf("- Average Fuel Usage: %.2f L/100km%n", totalFuelUsage / vehicles.length);
+            }
+            pw.println();
+            
+            // Driver Summary
+            Driver[] drivers = driverQueue.getAllDrivers();
+            pw.println("DRIVER SUMMARY:");
+            pw.println("Total Available Drivers: " + drivers.length);
+            
+            if (drivers.length > 0) {
+                double totalExperience = 0;
+                for (Driver driver : drivers) {
+                    totalExperience += driver.experienceYears;
+                }
+                pw.printf("- Average Experience: %.1f years%n", totalExperience / drivers.length);
+            }
+            pw.println();
+            
+            // Delivery Summary
+            Delivery[] deliveries = deliveryQueue.getAllDeliveries();
+            pw.println("DELIVERY SUMMARY:");
+            pw.println("Pending Deliveries: " + deliveries.length);
+            pw.println();
+            
+            // Maintenance Summary
+            MaintenanceTask[] tasks = maintenanceScheduler.getAllTasks();
+            pw.println("MAINTENANCE SUMMARY:");
+            pw.println("Pending Maintenance Tasks: " + tasks.length);
+            
+            if (tasks.length > 0) {
+                // Find most urgent task (lowest mileage)
+                MaintenanceTask mostUrgent = tasks[0];
+                for (MaintenanceTask task : tasks) {
+                    if (task.mileage < mostUrgent.mileage) {
+                        mostUrgent = task;
+                    }
+                }
+                pw.println("Most Urgent: Vehicle " + mostUrgent.vehicleNumber + " (" + mostUrgent.mileage + " km until service)");
+            }
+            pw.println();
+            
+            // Detailed Vehicle List
+            pw.println("DETAILED VEHICLE LIST:");
+            pw.println("Reg Number\tType\tMileage\tFuel Usage\tDriver ID");
+            pw.println("--------------------------------------------------------");
+            for (Vehicle vehicle : vehicles) {
+                pw.printf("%s\t%s\t%d\t%.2f\t%s%n",
+                    vehicle.registrationNumber,
+                    vehicle.type,
+                    vehicle.mileage,
+                    vehicle.fuelUsage,
+                    vehicle.driverId);
+            }
+            pw.println();
+            
+            // Detailed Driver List
+            if (drivers.length > 0) {
+                pw.println("DETAILED DRIVER LIST:");
+                pw.println("Driver ID\tName\tExperience\tLocation");
+                pw.println("-------------------------------------------");
+                for (Driver driver : drivers) {
+                    pw.printf("%s\t%s\t%d years\t%s%n",
+                        driver.driverId,
+                        driver.name,
+                        driver.experienceYears,
+                        driver.currentLocation);
+                }
+                pw.println();
+            }
+            
+            pw.println("=== END OF REPORT ===");
+            
+            pw.close();
+            writer.close();
+            
+            System.out.println("✅ System report exported to system_report.txt");
+            System.out.println("📊 Report includes vehicle, driver, delivery, and maintenance summaries");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Error generating report: " + e.getMessage());
         }
     }
 }
