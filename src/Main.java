@@ -1,20 +1,25 @@
 import java.util.Scanner;
 
+/**
+ * Main class - Vehicle Tracking & Maintenance System
+ * Central application that manages vehicles, drivers, deliveries, and maintenance
+ * Uses various data structures: BST for vehicles, queues for drivers/deliveries, priority queue for maintenance
+ */
 public class Main {
-    private static VehicleTree vehicleTree = new VehicleTree();
-    private static DriverQueue driverQueue = new DriverQueue();
-    private static DeliveryQueue deliveryQueue = new DeliveryQueue();
-    private static MaintenanceScheduler maintenanceScheduler = new MaintenanceScheduler();
-    private static Scanner scanner = new Scanner(System.in);
+    // Core data structures for the system
+    private static VehicleTree vehicleTree = new VehicleTree();           // BST for vehicle management
+    private static DriverQueue driverQueue = new DriverQueue();           // Queue for driver assignments
+    private static DeliveryQueue deliveryQueue = new DeliveryQueue();     // Queue for delivery management
+    private static MaintenanceScheduler maintenanceScheduler = new MaintenanceScheduler(); // Priority queue for maintenance
+    private static Scanner scanner = new Scanner(System.in);              // Input scanner
 
+    // Main method - entry point of the application
     public static void main(String[] args) {
-        // Welcome message
-        displayWelcomeMessage();
-        
-        // Start interactive menu
-        showMenu();
+        displayWelcomeMessage(); // Show welcome screen
+        showMenu();              // Start interactive menu system
     }
 
+    // Display welcome message and system overview
     private static void displayWelcomeMessage() {
         System.out.println("=".repeat(60));
         System.out.println("    WELCOME TO VEHICLE TRACKING & MAINTENANCE SYSTEM");
@@ -29,8 +34,10 @@ public class Main {
         System.out.println();
     }
 
+    // Main menu system - displays options and handles user selections
     private static void showMenu() {
-        while (true) {
+        while (true) { // Continuous loop until user exits
+            // Display main menu with all available options
             System.out.println("\n" + "=".repeat(60));
             System.out.println("           VEHICLE TRACKING SYSTEM - MAIN MENU");
             System.out.println("=".repeat(60));
@@ -57,62 +64,95 @@ public class Main {
             System.out.println(" 14. View Scheduled Maintenance");
             System.out.println(" 15. Process Next Maintenance Task");
             System.out.println(" 16. Check Vehicle Maintenance Due");
-            System.out.println(" 17. Exit");
+            System.out.println();
+            System.out.println("FUEL EFFICIENCY REPORTS:");
+            System.out.println(" 17. Generate Fuel Efficiency Report");
+            System.out.println(" 18. View Fuel Outliers");
+            System.out.println(" 19. Organize Vehicles by Fuel Performance");
+            System.out.println(" 20. Organize Vehicles by Fuel Efficiency");
+            System.out.println();
+            System.out.println("SEARCH & SORT FEATURES:");
+            System.out.println(" 21. Binary Search by Registration Number");
+            System.out.println(" 22. Organize Vehicles by Mileage");
+            System.out.println(" 23. Organize Vehicles by Driver Name");
+            System.out.println(" 24. Exit");
             System.out.println("=".repeat(60));
-            System.out.print("Please select an option (1-17): ");
+            System.out.print("Please select an option (1-24): ");
 
-            int choice = getIntInput();
+            int choice = getIntInput(); // Get user input with validation
             
+            // Route to appropriate method based on user choice
             switch (choice) {
                 case 1:
-                    addVehicle();
+                    addVehicle(); // BST insertion
                     break;
                 case 2:
-                    removeVehicle();
+                    removeVehicle(); // BST deletion
                     break;
                 case 3:
-                    searchByRegistration();
+                    searchByRegistration(); // BST search by key
                     break;
                 case 4:
-                    searchByMileage();
+                    searchByMileage(); // BST search by value
                     break;
                 case 5:
-                    displayAllVehicles();
+                    displayAllVehicles(); // BST in-order traversal
                     break;
                 case 6:
-                    addDriver();
+                    addDriver(); // Queue enqueue operation
                     break;
                 case 7:
-                    displayAvailableDrivers();
+                    displayAvailableDrivers(); // Queue display
                     break;
                 case 8:
-                    assignDriver();
+                    assignDriver(); // Queue dequeue operation
                     break;
                 case 9:
-                    createDeliveryRecord();
+                    createDeliveryRecord(); // Delivery queue enqueue
                     break;
                 case 10:
-                    viewPendingDeliveries();
+                    viewPendingDeliveries(); // Delivery queue display
                     break;
                 case 11:
-                    processNextDelivery();
+                    processNextDelivery(); // Delivery queue dequeue
                     break;
                 case 12:
-                    createMaintenanceRecord();
+                    createMaintenanceRecord(); // Create maintenance record
                     break;
                 case 13:
-                    scheduleMaintenanceTask();
+                    scheduleMaintenanceTask(); // Priority queue insertion
                     break;
                 case 14:
-                    viewScheduledMaintenance();
+                    viewScheduledMaintenance(); // Priority queue display
                     break;
                 case 15:
-                    processNextMaintenanceTask();
+                    processNextMaintenanceTask(); // Priority queue extraction
                     break;
                 case 16:
-                    checkVehicleMaintenanceDue();
+                    checkVehicleMaintenanceDue(); // Priority analysis
                     break;
                 case 17:
+                    generateFuelEfficiencyReport(); // Analytics - averages and statistics
+                    break;
+                case 18:
+                    viewFuelOutliers(); // Analytics - outlier detection
+                    break;
+                case 19:
+                    filterVehiclesByFuelPerformance(); // Analytics - filtering
+                    break;
+                case 20:
+                    sortVehiclesByFuelEfficiency(); // Analytics - sorting algorithms
+                    break;
+                case 21:
+                    binarySearchByRegistration(); // Binary search implementation
+                    break;
+                case 22:
+                    quickSortVehiclesByMileage(); // Quick sort implementation
+                    break;
+                case 23:
+                    mergeSortVehiclesByDriverName(); // Merge sort implementation
+                    break;
+                case 24:
                     System.out.println("Thank you for using Vehicle Tracking System!");
                     System.out.println("Goodbye!");
                     return;
@@ -122,13 +162,16 @@ public class Main {
         }
     }
 
+    // ===== VEHICLE MANAGEMENT METHODS (Binary Search Tree Operations) =====
+    
+    // Add new vehicle to BST - demonstrates BST insertion with validation
     private static void addVehicle() {
         System.out.println("\n=== Add New Vehicle ===");
         
         System.out.print("Enter Registration Number (e.g., GT1234-22): ");
         String regNumber = scanner.nextLine().trim();
         
-        // Check if vehicle already exists
+        // Check for duplicates using BST search - O(log n) average case
         if (vehicleTree.searchByRegistration(regNumber) != null) {
             System.out.println("Error: Vehicle with registration " + regNumber + " already exists!");
             return;
@@ -137,7 +180,7 @@ public class Main {
         System.out.print("Enter Vehicle Type (Truck/Van): ");
         String type = scanner.nextLine().trim();
         
-        // Validate vehicle type
+        // Input validation - ensure data integrity
         if (!type.equalsIgnoreCase("Truck") && !type.equalsIgnoreCase("Van")) {
             System.out.println("Error: Vehicle type must be either 'Truck' or 'Van'");
             return;
@@ -465,25 +508,482 @@ public class Main {
         maintenance.displayInfo();
     }
 
+    // Input validation method for integers - prevents crashes from invalid input
     private static int getIntInput() {
-        while (true) {
+        while (true) { // Keep asking until valid input
             try {
                 String input = scanner.nextLine();
-                return Integer.parseInt(input);
+                return Integer.parseInt(input); // Try to parse as integer
             } catch (NumberFormatException e) {
+                // Handle invalid input gracefully
                 System.out.print("Invalid input. Please enter a valid number: ");
             }
         }
     }
 
+    // Input validation method for decimal numbers - prevents crashes from invalid input
     private static double getDoubleInput() {
-        while (true) {
+        while (true) { // Keep asking until valid input
             try {
                 String input = scanner.nextLine();
-                return Double.parseDouble(input);
+                return Double.parseDouble(input); // Try to parse as double
             } catch (NumberFormatException e) {
+                // Handle invalid input gracefully
                 System.out.print("Invalid input. Please enter a valid number: ");
             }
+        }
+    }
+
+    // ===== FUEL EFFICIENCY ANALYTICS METHODS =====
+    
+    // Generate comprehensive fuel efficiency report with statistics
+    private static void generateFuelEfficiencyReport() {
+        System.out.println("\n===== FUEL EFFICIENCY REPORT =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        if (vehicles.length == 0) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        double totalFuelUsage = 0;
+        int count = 0;
+
+        System.out.println("\nVehicle Fuel Efficiency Details:");
+        System.out.println("Vehicle ID | Type  | Fuel Usage (L/100km) | Status");
+        System.out.println("-----------|-------|---------------------|--------");
+
+        for (Vehicle vehicle : vehicles) {
+            System.out.printf("%-10s | %-5s | %-19.2f | %s%n", 
+                vehicle.registrationNumber, 
+                vehicle.type, 
+                vehicle.fuelUsage,
+                vehicle.fuelUsage > 15 ? "High Usage" : "Normal");
+            totalFuelUsage += vehicle.fuelUsage;
+            count++;
+        }
+
+        double averageFuelUsage = totalFuelUsage / count;
+        System.out.printf("\nTotal Vehicles: %d%n", count);
+        System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
+        
+        // Find best and worst performers
+        Vehicle mostEfficient = vehicles[0];
+        Vehicle leastEfficient = vehicles[0];
+        
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.fuelUsage < mostEfficient.fuelUsage) {
+                mostEfficient = vehicle;
+            }
+            if (vehicle.fuelUsage > leastEfficient.fuelUsage) {
+                leastEfficient = vehicle;
+            }
+        }
+        
+        System.out.printf("\nMost Efficient: %s (%.2f L/100km)%n", 
+            mostEfficient.registrationNumber, mostEfficient.fuelUsage);
+        System.out.printf("Least Efficient: %s (%.2f L/100km)%n", 
+            leastEfficient.registrationNumber, leastEfficient.fuelUsage);
+    }
+
+    private static void viewFuelOutliers() {
+        System.out.println("\n===== FUEL EFFICIENCY OUTLIERS =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        if (vehicles.length == 0) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        // Calculate average
+        double totalFuelUsage = 0;
+        for (Vehicle vehicle : vehicles) {
+            totalFuelUsage += vehicle.fuelUsage;
+        }
+        double averageFuelUsage = totalFuelUsage / vehicles.length;
+
+        // Define outlier threshold (vehicles using 50% more than average)
+        double outlierThreshold = averageFuelUsage * 1.5;
+
+        System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
+        System.out.printf("Outlier Threshold: %.2f L/100km%n", outlierThreshold);
+        System.out.println("\nVehicles with High Fuel Usage (Outliers):");
+        System.out.println("Vehicle ID | Type  | Fuel Usage | Excess Usage");
+        System.out.println("-----------|-------|------------|-------------");
+
+        boolean foundOutliers = false;
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.fuelUsage > outlierThreshold) {
+                double excess = vehicle.fuelUsage - averageFuelUsage;
+                System.out.printf("%-10s | %-5s | %-10.2f | +%.2f L/100km%n", 
+                    vehicle.registrationNumber, 
+                    vehicle.type, 
+                    vehicle.fuelUsage,
+                    excess);
+                foundOutliers = true;
+            }
+        }
+
+        if (!foundOutliers) {
+            System.out.println("No fuel efficiency outliers found.");
+        }
+    }
+
+    private static void filterVehiclesByFuelPerformance() {
+        System.out.println("\n===== FILTER VEHICLES BY FUEL PERFORMANCE =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        System.out.println("Filter Options:");
+        System.out.println("1. High Efficiency (< 8 L/100km)");
+        System.out.println("2. Medium Efficiency (8-12 L/100km)");
+        System.out.println("3. Low Efficiency (> 12 L/100km)");
+        System.out.println("4. Custom Range");
+        System.out.print("Choose filter option: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        boolean foundVehicles = false;
+
+        System.out.println("\nFiltered Results:");
+        System.out.println("Vehicle ID | Type  | Fuel Usage | Efficiency");
+        System.out.println("-----------|-------|------------|----------");
+
+        switch (choice) {
+            case 1: // High Efficiency
+                for (Vehicle vehicle : vehicles) {
+                    if (vehicle.fuelUsage < 8) {
+                        System.out.printf("%-10s | %-5s | %-10.2f | High%n", 
+                            vehicle.registrationNumber, vehicle.type, vehicle.fuelUsage);
+                        foundVehicles = true;
+                    }
+                }
+                break;
+            case 2: // Medium Efficiency
+                for (Vehicle vehicle : vehicles) {
+                    if (vehicle.fuelUsage >= 8 && vehicle.fuelUsage <= 12) {
+                        System.out.printf("%-10s | %-5s | %-10.2f | Medium%n", 
+                            vehicle.registrationNumber, vehicle.type, vehicle.fuelUsage);
+                        foundVehicles = true;
+                    }
+                }
+                break;
+            case 3: // Low Efficiency
+                for (Vehicle vehicle : vehicles) {
+                    if (vehicle.fuelUsage > 12) {
+                        System.out.printf("%-10s | %-5s | %-10.2f | Low%n", 
+                            vehicle.registrationNumber, vehicle.type, vehicle.fuelUsage);
+                        foundVehicles = true;
+                    }
+                }
+                break;
+            case 4: // Custom Range
+                System.out.print("Enter minimum fuel usage (L/100km): ");
+                double minUsage = scanner.nextDouble();
+                System.out.print("Enter maximum fuel usage (L/100km): ");
+                double maxUsage = scanner.nextDouble();
+                scanner.nextLine(); // consume newline
+
+                for (Vehicle vehicle : vehicles) {
+                    if (vehicle.fuelUsage >= minUsage && vehicle.fuelUsage <= maxUsage) {
+                        System.out.printf("%-10s | %-5s | %-10.2f | Custom%n", 
+                            vehicle.registrationNumber, vehicle.type, vehicle.fuelUsage);
+                        foundVehicles = true;
+                    }
+                }
+                break;
+            default:
+                System.out.println("Invalid option.");
+                return;
+        }
+
+        if (!foundVehicles) {
+            System.out.println("No vehicles found matching the filter criteria.");
+        }
+    }
+
+    private static void sortVehiclesByFuelEfficiency() {
+        System.out.println("\n===== SORT VEHICLES BY FUEL EFFICIENCY =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        if (vehicles.length == 0) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        System.out.println("Sort Options:");
+        System.out.println("1. Most Efficient First (Low to High fuel usage)");
+        System.out.println("2. Least Efficient First (High to Low fuel usage)");
+        System.out.print("Choose sort option: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        // Simple bubble sort for demonstration
+        for (int i = 0; i < vehicles.length - 1; i++) {
+            for (int j = 0; j < vehicles.length - 1 - i; j++) {
+                boolean shouldSwap = false;
+                
+                if (choice == 1) { // Most efficient first (ascending)
+                    shouldSwap = vehicles[j].fuelUsage > vehicles[j + 1].fuelUsage;
+                } else if (choice == 2) { // Least efficient first (descending)
+                    shouldSwap = vehicles[j].fuelUsage < vehicles[j + 1].fuelUsage;
+                }
+                
+                if (shouldSwap) {
+                    Vehicle temp = vehicles[j];
+                    vehicles[j] = vehicles[j + 1];
+                    vehicles[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("\nSorted Vehicle List:");
+        System.out.println("Rank | Vehicle ID | Type  | Fuel Usage | Efficiency Rating");
+        System.out.println("-----|-----------|-------|------------|------------------");
+
+        for (int i = 0; i < vehicles.length; i++) {
+            String efficiency;
+            if (vehicles[i].fuelUsage < 8) {
+                efficiency = "Excellent";
+            } else if (vehicles[i].fuelUsage <= 12) {
+                efficiency = "Good";
+            } else if (vehicles[i].fuelUsage <= 15) {
+                efficiency = "Fair";
+            } else {
+                efficiency = "Poor";
+            }
+
+            System.out.printf("%-4d | %-10s | %-5s | %-10.2f | %s%n", 
+                i + 1, 
+                vehicles[i].registrationNumber, 
+                vehicles[i].type, 
+                vehicles[i].fuelUsage,
+                efficiency);
+        }
+    }
+
+    // ===== SEARCH & SORT FEATURES =====
+    
+    // Binary search for vehicle by registration number
+    private static void binarySearchByRegistration() {
+        System.out.println("\n===== BINARY SEARCH BY REGISTRATION =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        System.out.print("Enter Registration Number to search: ");
+        String regNumber = scanner.nextLine().trim();
+
+        // Record start time for performance analysis
+        long startTime = System.nanoTime();
+        
+        // Perform binary search
+        Vehicle found = vehicleTree.binarySearchByRegistration(regNumber);
+        
+        long endTime = System.nanoTime();
+        double searchTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+
+        if (found != null) {
+            System.out.println("\n✓ Vehicle found using Binary Search:");
+            System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
+            System.out.println("=".repeat(40));
+            found.displayInfo();
+        } else {
+            System.out.println("✗ Vehicle with registration '" + regNumber + "' not found.");
+            System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
+        }
+    }
+
+    // Quick sort vehicles by mileage
+    private static void quickSortVehiclesByMileage() {
+        System.out.println("\n===== QUICK SORT BY MILEAGE =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        if (vehicles.length == 0) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        System.out.println("Vehicles before sorting:");
+        displayVehicleArray(vehicles, "Current Order");
+
+        // Record start time for performance analysis
+        long startTime = System.nanoTime();
+        
+        // Perform quick sort
+        quickSortByMileage(vehicles, 0, vehicles.length - 1);
+        
+        long endTime = System.nanoTime();
+        double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+
+        System.out.println("\n✓ Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+        System.out.println("Vehicles sorted by mileage (ascending):");
+        displayVehicleArray(vehicles, "Sorted by Mileage");
+    }
+
+    // Quick sort recursive implementation
+    private static void quickSortByMileage(Vehicle[] vehicles, int low, int high) {
+        if (low < high) {
+            // Partition the array and get the pivot index
+            int partitionIndex = partitionByMileage(vehicles, low, high);
+            
+            // Recursively sort elements before and after partition
+            quickSortByMileage(vehicles, low, partitionIndex - 1);  // Sort left sub-array
+            quickSortByMileage(vehicles, partitionIndex + 1, high); // Sort right sub-array
+        }
+    }
+
+    // Partition method for quick sort (using last element as pivot)
+    private static int partitionByMileage(Vehicle[] vehicles, int low, int high) {
+        int pivot = vehicles[high].mileage; // Choose last element as pivot
+        int i = low - 1; // Index of smaller element
+
+        for (int j = low; j < high; j++) {
+            // If current element is smaller than or equal to pivot
+            if (vehicles[j].mileage <= pivot) {
+                i++;
+                swapVehicles(vehicles, i, j);
+            }
+        }
+        swapVehicles(vehicles, i + 1, high); // Place pivot in correct position
+        return i + 1; // Return partition index
+    }
+
+    // Merge sort vehicles by driver name
+    private static void mergeSortVehiclesByDriverName() {
+        System.out.println("\n===== MERGE SORT BY DRIVER NAME =====");
+        if (vehicleTree.isEmpty()) {
+            System.out.println("No vehicles in the system.");
+            return;
+        }
+
+        Vehicle[] vehicles = vehicleTree.getAllVehicles();
+        if (vehicles.length == 0) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        System.out.println("Vehicles before sorting:");
+        displayVehicleArray(vehicles, "Current Order");
+
+        // Record start time for performance analysis
+        long startTime = System.nanoTime();
+        
+        // Perform merge sort
+        mergeSortByDriverName(vehicles, 0, vehicles.length - 1);
+        
+        long endTime = System.nanoTime();
+        double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+
+        System.out.println("\n✓ Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+        System.out.println("Vehicles sorted by driver name (alphabetical):");
+        displayVehicleArray(vehicles, "Sorted by Driver Name");
+    }
+
+    // Merge sort recursive implementation
+    private static void mergeSortByDriverName(Vehicle[] vehicles, int left, int right) {
+        if (left < right) {
+            // Find the middle point to divide the array into two halves
+            int middle = left + (right - left) / 2;
+
+            // Recursively sort first and second halves
+            mergeSortByDriverName(vehicles, left, middle);      // Sort left half
+            mergeSortByDriverName(vehicles, middle + 1, right); // Sort right half
+
+            // Merge the sorted halves
+            mergeByDriverName(vehicles, left, middle, right);
+        }
+    }
+
+    // Merge method for merge sort
+    private static void mergeByDriverName(Vehicle[] vehicles, int left, int middle, int right) {
+        // Calculate sizes of two sub-arrays to be merged
+        int leftSize = middle - left + 1;
+        int rightSize = right - middle;
+
+        // Create temporary arrays
+        Vehicle[] leftArray = new Vehicle[leftSize];
+        Vehicle[] rightArray = new Vehicle[rightSize];
+
+        // Copy data to temporary arrays
+        for (int i = 0; i < leftSize; i++)
+            leftArray[i] = vehicles[left + i];
+        for (int j = 0; j < rightSize; j++)
+            rightArray[j] = vehicles[middle + 1 + j];
+
+        // Merge the temporary arrays back into vehicles[left..right]
+        int i = 0, j = 0, k = left; // Initial indexes of left, right, and merged arrays
+
+        while (i < leftSize && j < rightSize) {
+            // Compare driver names lexicographically (alphabetical order)
+            if (leftArray[i].driverId.compareTo(rightArray[j].driverId) <= 0) {
+                vehicles[k] = leftArray[i];
+                i++;
+            } else {
+                vehicles[k] = rightArray[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Copy remaining elements of leftArray[], if any
+        while (i < leftSize) {
+            vehicles[k] = leftArray[i];
+            i++;
+            k++;
+        }
+
+        // Copy remaining elements of rightArray[], if any
+        while (j < rightSize) {
+            vehicles[k] = rightArray[j];
+            j++;
+            k++;
+        }
+    }
+
+    // Helper method to swap two vehicles in array
+    private static void swapVehicles(Vehicle[] vehicles, int i, int j) {
+        Vehicle temp = vehicles[i];
+        vehicles[i] = vehicles[j];
+        vehicles[j] = temp;
+    }
+
+    // Helper method to display vehicle array in formatted table
+    private static void displayVehicleArray(Vehicle[] vehicles, String title) {
+        System.out.println("\n" + title + ":");
+        System.out.println("Rank | Registration | Type  | Mileage | Driver ID | Fuel Usage");
+        System.out.println("-----|-------------|-------|---------|-----------|------------");
+        
+        for (int i = 0; i < vehicles.length; i++) {
+            System.out.printf("%-4d | %-11s | %-5s | %-7d | %-9s | %.2f L/100km%n",
+                i + 1,
+                vehicles[i].registrationNumber,
+                vehicles[i].type,
+                vehicles[i].mileage,
+                vehicles[i].driverId,
+                vehicles[i].fuelUsage);
         }
     }
 }

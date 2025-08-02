@@ -1,27 +1,33 @@
 import java.util.PriorityQueue;
 
+/**
+ * MaintenanceScheduler class - manages maintenance tasks using priority queue
+ * Tasks are prioritized by mileage (lower mileage = higher priority)
+ */
 public class MaintenanceScheduler {
+    // Priority queue to store maintenance tasks (min-heap)
     private PriorityQueue<MaintenanceTask> taskHeap = new PriorityQueue<>();
 
-    // Add a vehicle to the maintenance queue
+    // Add a maintenance task to the priority queue
     public void addTask(MaintenanceTask task) {
         taskHeap.add(task);
         System.out.println("Scheduled maintenance for: " + task.vehicleNumber);
     }
 
-    // Service the most urgent vehicle
+    // Process the highest priority maintenance task
     public void processNextTask() {
         if (taskHeap.isEmpty()) {
             System.out.println("No maintenance tasks available.");
             return;
         }
 
+        // Remove and return the highest priority task
         MaintenanceTask task = taskHeap.poll();
         System.out.println("\n🔧 Servicing vehicle with highest priority:");
         task.displayInfo();
     }
 
-    // Show all scheduled tasks
+    // Display all scheduled tasks (without removing them)
     public void showAllTasks() {
         if (taskHeap.isEmpty()) {
             System.out.println("No pending maintenance tasks.");
@@ -29,12 +35,14 @@ public class MaintenanceScheduler {
         }
 
         System.out.println("\n📋 Pending Maintenance Tasks:");
+        // Iterate through all tasks in the queue
         for (MaintenanceTask task : taskHeap) {
             task.displayInfo();
             System.out.println("-----");
         }
     }
 
+    // Check if scheduler has any pending tasks
     public boolean isEmpty() {
         return taskHeap.isEmpty();
     }

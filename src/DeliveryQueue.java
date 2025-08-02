@@ -1,22 +1,26 @@
+/**
+ * DeliveryQueue class - implements circular queue for managing delivery orders
+ * Processes deliveries in FIFO order to ensure fair scheduling
+ */
 public class DeliveryQueue {
-    private static final int MAX = 100;
-    private Delivery[] queue = new Delivery [MAX]; 
-    private int front = 0;
-    private int rear = -1;
-    private int count = 0;
+    private static final int MAX = 100; // Maximum queue capacity
+    private Delivery[] queue = new Delivery[MAX]; // Array to store deliveries
+    private int front = 0;  // Points to first delivery
+    private int rear = -1;  // Points to last delivery
+    private int count = 0;  // Current number of deliveries in queue
 
-    // To add delivery to the queue
+    // Add delivery to the back of the queue
     public void enqueue(Delivery delivery) {
         if (count == MAX) {
             System.out.println("Delivery queue is full!");
             return;
         }
-        rear = (rear + 1) % MAX;
+        rear = (rear + 1) % MAX; // Circular increment
         queue[rear] = delivery;
         count++;
     }
 
-    // Process the next delivery (remove from queue)
+    // Remove and return next delivery to process
     public Delivery dequeue() {
         if (count == 0) {
             System.out.println("No deliveries to process!");
@@ -24,18 +28,19 @@ public class DeliveryQueue {
         }
 
         Delivery processed = queue[front];
-        front = (front + 1) % MAX;
+        front = (front + 1) % MAX; // Circular increment
         count--;
         return processed;
     }
 
-    // View all pending deliveries
+    // Display all pending deliveries in queue
     public void displayPendingDeliveries() {
         if (count == 0) {
             System.out.println("No pending deliveries.");
             return;
         }
         System.out.println("Pending Deliveries:");
+        // Traverse queue from front to rear
         for (int i = 0; i < count; i++) {
             int index = (front + i) % MAX;
             queue[index].displayInfo();

@@ -1,4 +1,8 @@
+/**
+ * Vehicle class - represents a vehicle (truck or van) in the system
+ */
 public class Vehicle {
+    // Vehicle attributes
     String registrationNumber;
     String type; // truck or van
     int mileage;
@@ -14,6 +18,7 @@ public class Vehicle {
         this.driverId = driverId;
     }
 
+    // Display vehicle information
     public void displayInfo() {
         System.out.println("Reg No: " + registrationNumber);
         System.out.println("Type: " + type);
