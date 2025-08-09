@@ -1,3 +1,5 @@
+package datastructures;
+
 /**
  * DriverQueue class - implements circular queue for managing available drivers
  * Uses FIFO (First In, First Out) principle for fair driver assignment
@@ -39,12 +41,13 @@ public class DriverQueue {
             return;
         }
         System.out.println("Available Drivers:");
+        Driver.displayTableHeader();
         // Traverse queue from front to rear
         for (int i = 0; i < count; i++) {
             int index = (front + i) % MAX;
             drivers[index].displayInfo();
-            System.out.println("-----");
         }
+        Driver.displayTableFooter();
     }
 
     // Get all drivers as an array (for file storage)

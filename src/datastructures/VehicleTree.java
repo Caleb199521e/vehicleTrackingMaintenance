@@ -1,3 +1,5 @@
+package datastructures;
+
 /**
  * VehicleTree class - implements Binary Search Tree for vehicle management
  * Vehicles are organized by mileage for efficient searching and sorting
@@ -130,7 +132,9 @@ public class VehicleTree {
             return;
         }
         System.out.println("\n=== All Vehicles (sorted by mileage) ===");
+        Vehicle.displayTableHeader();
         inOrderTraversal(root);
+        Vehicle.displayTableFooter();
     }
 
     // In-order traversal - visits nodes in sorted order
@@ -138,7 +142,6 @@ public class VehicleTree {
         if (node != null) {
             inOrderTraversal(node.left);    // Visit left subtree
             node.vehicle.displayInfo();      // Process current node
-            System.out.println("---------------");
             inOrderTraversal(node.right);    // Visit right subtree
         }
     }

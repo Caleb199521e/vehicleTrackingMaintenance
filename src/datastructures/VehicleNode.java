@@ -1,3 +1,5 @@
+package datastructures;
+
 /**
  * VehicleNode class - represents a node in the Binary Search Tree
  * Each node contains a vehicle and pointers to left and right children

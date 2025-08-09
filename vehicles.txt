@@ -1,2 +1,0 @@
-# Vehicle Data - Registration,Type,Mileage,FuelUsage,DriverId
-GT1234-22,truck,15000,12.50,DRV001

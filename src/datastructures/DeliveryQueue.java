@@ -1,3 +1,5 @@
+package datastructures;
+
 /**
  * DeliveryQueue class - implements circular queue for managing delivery orders
  * Processes deliveries in FIFO order to ensure fair scheduling
@@ -40,12 +42,13 @@ public class DeliveryQueue {
             return;
         }
         System.out.println("Pending Deliveries:");
+        Delivery.displayTableHeader();
         // Traverse queue from front to rear
         for (int i = 0; i < count; i++) {
             int index = (front + i) % MAX;
             queue[index].displayInfo();
-            System.out.println("-----");
         }
+        Delivery.displayTableFooter();
     }
 
     // Get all deliveries as an array (for file storage)

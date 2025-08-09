@@ -1,3 +1,4 @@
+import datastructures.*;
 import java.util.Scanner;
 import java.io.*;
 
@@ -7,7 +8,7 @@ import java.io.*;
  * Uses various data structures: BST for vehicles, queues for drivers/deliveries, priority queue for maintenance
  */
 public class Main {
-    // Core data structures for the system
+    // Core data structures for the system - all from custom datastructures package
     private static VehicleTree vehicleTree = new VehicleTree();           // BST for vehicle management
     private static DriverQueue driverQueue = new DriverQueue();           // Queue for driver assignments
     private static DeliveryQueue deliveryQueue = new DeliveryQueue();     // Queue for delivery management
@@ -26,153 +27,355 @@ public class Main {
         System.out.println("    WELCOME TO VEHICLE TRACKING & MAINTENANCE SYSTEM");
         System.out.println("=".repeat(60));
         System.out.println("This system allows you to:");
-        System.out.println("• Manage vehicles (trucks and vans)");
-        System.out.println("• Track drivers and their assignments");
-        System.out.println("• Monitor maintenance records");
-        System.out.println("• Handle delivery assignments");
+        System.out.println("* Manage vehicles (trucks and vans)");
+        System.out.println("* Track drivers and their assignments");
+        System.out.println("* Monitor maintenance records");
+        System.out.println("* Handle delivery assignments");
         System.out.println("=".repeat(60));
         System.out.println("Start by adding vehicles and drivers to get started!");
         System.out.println();
     }
 
-    // Main menu system - displays options and handles user selections
+    // Main menu system - displays main categories and handles navigation
     private static void showMenu() {
         while (true) { // Continuous loop until user exits
-            // Display main menu with all available options
-            System.out.println("\n" + "=".repeat(60));
-            System.out.println("           VEHICLE TRACKING SYSTEM - MAIN MENU");
-            System.out.println("=".repeat(60));
-            System.out.println("VEHICLE MANAGEMENT:");
-            System.out.println("  1. Add Vehicle (Truck/Van)");
-            System.out.println("  2. Remove Vehicle");
-            System.out.println("  3. Search Vehicle by Registration");
-            System.out.println("  4. Search Vehicle by Mileage");
-            System.out.println("  5. Display All Vehicles");
-            System.out.println();
-            System.out.println("DRIVER MANAGEMENT:");
-            System.out.println("  6. Add Driver");
-            System.out.println("  7. Display Available Drivers");
-            System.out.println("  8. Assign Next Available Driver");
-            System.out.println();
-            System.out.println("DELIVERY OPERATIONS:");
-            System.out.println("  9. Create Delivery Record");
-            System.out.println(" 10. View Pending Deliveries");
-            System.out.println(" 11. Process Next Delivery");
-            System.out.println();
-            System.out.println("MAINTENANCE MANAGEMENT:");
-            System.out.println(" 12. Create Maintenance Record");
-            System.out.println(" 13. Schedule Maintenance Task");
-            System.out.println(" 14. View Scheduled Maintenance");
-            System.out.println(" 15. Process Next Maintenance Task");
-            System.out.println(" 16. Check Vehicle Maintenance Due");
-            System.out.println();
-            System.out.println("FUEL EFFICIENCY REPORTS:");
-            System.out.println(" 17. Generate Fuel Efficiency Report");
-            System.out.println(" 18. View Fuel Outliers");
-            System.out.println(" 19. Organize Vehicles by Fuel Performance");
-            System.out.println(" 20. Organize Vehicles by Fuel Efficiency");
-            System.out.println();
-            System.out.println("SEARCH & SORT FEATURES:");
-            System.out.println(" 21. Binary Search by Registration Number");
-            System.out.println(" 22. Organize Vehicles by Mileage");
-            System.out.println(" 23. Organize Vehicles by Driver Name");
-            System.out.println();
-            System.out.println("FILE STORAGE:");
-            System.out.println(" 24. Save All Data to Files");
-            System.out.println(" 25. Load All Data from Files");
-            System.out.println(" 26. Export System Report");
-            System.out.println(" 27. Exit");
-            System.out.println("=".repeat(60));
-            System.out.print("Please select an option (1-27): ");
+            try {
+                // Display main menu with categories
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("           VEHICLE TRACKING SYSTEM - MAIN MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("Please select a category:");
+                System.out.println();
+                System.out.println("  1. Vehicle Management");
+                System.out.println("  2. Driver Management");
+                System.out.println("  3. Delivery Operations");
+                System.out.println("  4. Maintenance Management");
+                System.out.println("  5. Fuel Efficiency Reports");
+                System.out.println("  6. Search & Sort Features");
+                System.out.println("  7. File Storage");
+                System.out.println("  8. Exit");
+                System.out.println();
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-8): ");
 
-            int choice = getIntInput(); // Get user input with validation
-            
-            // Route to appropriate method based on user choice
-            switch (choice) {
-                case 1:
-                    addVehicle(); // BST insertion
-                    break;
-                case 2:
-                    removeVehicle(); // BST deletion
-                    break;
-                case 3:
-                    searchByRegistration(); // BST search by key
-                    break;
-                case 4:
-                    searchByMileage(); // BST search by value
-                    break;
-                case 5:
-                    displayAllVehicles(); // BST in-order traversal
-                    break;
-                case 6:
-                    addDriver(); // Queue enqueue operation
-                    break;
-                case 7:
-                    displayAvailableDrivers(); // Queue display
-                    break;
-                case 8:
-                    assignDriver(); // Queue dequeue operation
-                    break;
-                case 9:
-                    createDeliveryRecord(); // Delivery queue enqueue
-                    break;
-                case 10:
-                    viewPendingDeliveries(); // Delivery queue display
-                    break;
-                case 11:
-                    processNextDelivery(); // Delivery queue dequeue
-                    break;
-                case 12:
-                    createMaintenanceRecord(); // Create maintenance record
-                    break;
-                case 13:
-                    scheduleMaintenanceTask(); // Priority queue insertion
-                    break;
-                case 14:
-                    viewScheduledMaintenance(); // Priority queue display
-                    break;
-                case 15:
-                    processNextMaintenanceTask(); // Priority queue extraction
-                    break;
-                case 16:
-                    checkVehicleMaintenanceDue(); // Priority analysis
-                    break;
-                case 17:
-                    generateFuelEfficiencyReport(); // Analytics - averages and statistics
-                    break;
-                case 18:
-                    viewFuelOutliers(); // Analytics - outlier detection
-                    break;
-                case 19:
-                    filterVehiclesByFuelPerformance(); // Analytics - filtering
-                    break;
-                case 20:
-                    sortVehiclesByFuelEfficiency(); // Analytics - sorting algorithms
-                    break;
-                case 21:
-                    binarySearchByRegistration(); // Binary search implementation
-                    break;
-                case 22:
-                    quickSortVehiclesByMileage(); // Quick sort implementation
-                    break;
-                case 23:
-                    mergeSortVehiclesByDriverName(); // Merge sort implementation
-                    break;
-                case 24:
-                    saveAllDataToFiles(); // Save all data to text files
-                    break;
-                case 25:
-                    loadAllDataFromFiles(); // Load all data from text files
-                    break;
-                case 26:
-                    exportSystemReport(); // Export comprehensive system report
-                    break;
-                case 27:
-                    System.out.println("Thank you for using Vehicle Tracking System!");
-                    System.out.println("Goodbye!");
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                int choice = getIntInputSafe(); // Get user input with validation
+                
+                // Route to appropriate sub-menu based on user choice
+                switch (choice) {
+                    case 1:
+                        showVehicleManagementMenu();
+                        break;
+                    case 2:
+                        showDriverManagementMenu();
+                        break;
+                    case 3:
+                        showDeliveryOperationsMenu();
+                        break;
+                    case 4:
+                        showMaintenanceManagementMenu();
+                        break;
+                    case 5:
+                        showFuelEfficiencyMenu();
+                        break;
+                    case 6:
+                        showSearchSortMenu();
+                        break;
+                    case 7:
+                        showFileStorageMenu();
+                        break;
+                    case 8:
+                        System.out.println("\n" + "=".repeat(60));
+                        System.out.println("Thank you for using Vehicle Tracking System!");
+                        System.out.println("Have a great day!");
+                        System.out.println("=".repeat(60));
+                        return;
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-8.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ An unexpected error occurred: " + e.getMessage());
+                System.out.println("Returning to main menu...");
+            }
+        }
+    }
+
+    // ===== SUB-MENU METHODS =====
+
+    // Vehicle Management Sub-Menu
+    private static void showVehicleManagementMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("VEHICLE MANAGEMENT MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Add New Vehicle (Truck/Van)");
+                System.out.println("  2. Remove Vehicle");
+                System.out.println("  3. Search Vehicle by Registration");
+                System.out.println("  4. Search Vehicle by Mileage");
+                System.out.println("  5. Display All Vehicles");
+                System.out.println("  6. <- Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-6): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        addVehicle();
+                        break;
+                    case 2:
+                        removeVehicle();
+                        break;
+                    case 3:
+                        searchByRegistration();
+                        break;
+                    case 4:
+                        searchByMileage();
+                        break;
+                    case 5:
+                        displayAllVehicles();
+                        break;
+                    case 6:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-6.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in vehicle management: " + e.getMessage());
+            }
+        }
+    }
+
+    // Driver Management Sub-Menu
+    private static void showDriverManagementMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("👨‍💼           DRIVER MANAGEMENT MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Add New Driver");
+                System.out.println("  2. Display Available Drivers");
+                System.out.println("  3. Assign Next Available Driver");
+                System.out.println("  4. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-4): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        addDriver();
+                        break;
+                    case 2:
+                        displayAvailableDrivers();
+                        break;
+                    case 3:
+                        assignDriver();
+                        break;
+                    case 4:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in driver management: " + e.getMessage());
+            }
+        }
+    }
+
+    // Delivery Operations Sub-Menu
+    private static void showDeliveryOperationsMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("📦           DELIVERY OPERATIONS MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Create New Delivery Record");
+                System.out.println("  2. View Pending Deliveries");
+                System.out.println("  3. Process Next Delivery");
+                System.out.println("  4. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-4): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        createDeliveryRecord();
+                        break;
+                    case 2:
+                        viewPendingDeliveries();
+                        break;
+                    case 3:
+                        processNextDelivery();
+                        break;
+                    case 4:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in delivery operations: " + e.getMessage());
+            }
+        }
+    }
+
+    // Maintenance Management Sub-Menu
+    private static void showMaintenanceManagementMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("🔧           MAINTENANCE MANAGEMENT MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Create Maintenance Record");
+                System.out.println("  2. Schedule Maintenance Task");
+                System.out.println("  3. View Scheduled Maintenance");
+                System.out.println("  4. Process Next Maintenance Task");
+                System.out.println("  5. Check Vehicle Maintenance Due");
+                System.out.println("  6. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-6): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        createMaintenanceRecord();
+                        break;
+                    case 2:
+                        scheduleMaintenanceTask();
+                        break;
+                    case 3:
+                        viewScheduledMaintenance();
+                        break;
+                    case 4:
+                        processNextMaintenanceTask();
+                        break;
+                    case 5:
+                        checkVehicleMaintenanceDue();
+                        break;
+                    case 6:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-6.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in maintenance management: " + e.getMessage());
+            }
+        }
+    }
+
+    // Fuel Efficiency Reports Sub-Menu
+    private static void showFuelEfficiencyMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("⛽           FUEL EFFICIENCY REPORTS MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Generate Fuel Efficiency Report");
+                System.out.println("  2. View Fuel Outliers");
+                System.out.println("  3. Filter Vehicles by Fuel Performance");
+                System.out.println("  4. Sort Vehicles by Fuel Efficiency");
+                System.out.println("  5. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-5): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        generateFuelEfficiencyReport();
+                        break;
+                    case 2:
+                        viewFuelOutliers();
+                        break;
+                    case 3:
+                        filterVehiclesByFuelPerformance();
+                        break;
+                    case 4:
+                        sortVehiclesByFuelEfficiency();
+                        break;
+                    case 5:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-5.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in fuel efficiency reports: " + e.getMessage());
+            }
+        }
+    }
+
+    // Search & Sort Features Sub-Menu
+    private static void showSearchSortMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("🔍           SEARCH & SORT FEATURES MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Binary Search by Registration Number");
+                System.out.println("  2. Quick Sort Vehicles by Mileage");
+                System.out.println("  3. Merge Sort Vehicles by Driver Name");
+                System.out.println("  4. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-4): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        binarySearchByRegistration();
+                        break;
+                    case 2:
+                        quickSortVehiclesByMileage();
+                        break;
+                    case 3:
+                        mergeSortVehiclesByDriverName();
+                        break;
+                    case 4:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in search & sort features: " + e.getMessage());
+            }
+        }
+    }
+
+    // File Storage Sub-Menu
+    private static void showFileStorageMenu() {
+        while (true) {
+            try {
+                System.out.println("\n" + "=".repeat(60));
+                System.out.println("💾           FILE STORAGE MENU");
+                System.out.println("=".repeat(60));
+                System.out.println("  1. Save All Data to Files");
+                System.out.println("  2. Load All Data from Files");
+                System.out.println("  3. Export System Report");
+                System.out.println("  4. ← Back to Main Menu");
+                System.out.println("=".repeat(60));
+                System.out.print("Enter your choice (1-4): ");
+
+                int choice = getIntInputSafe();
+                
+                switch (choice) {
+                    case 1:
+                        saveAllDataToFiles();
+                        break;
+                    case 2:
+                        loadAllDataFromFiles();
+                        break;
+                    case 3:
+                        exportSystemReport();
+                        break;
+                    case 4:
+                        return; // Go back to main menu
+                    default:
+                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error in file storage operations: " + e.getMessage());
             }
         }
     }
@@ -181,211 +384,287 @@ public class Main {
     
     // Add new vehicle to BST - demonstrates BST insertion with validation
     private static void addVehicle() {
-        System.out.println("\n=== Add New Vehicle ===");
-        
-        System.out.print("Enter Registration Number (e.g., GT1234-22): ");
-        String regNumber = scanner.nextLine().trim();
-        
-        // Check for duplicates using BST search - O(log n) average case
-        if (vehicleTree.searchByRegistration(regNumber) != null) {
-            System.out.println("Error: Vehicle with registration " + regNumber + " already exists!");
-            return;
+        try {
+            System.out.println("\n=== Add New Vehicle ===");
+            
+            String regNumber = getStringInputSafe("Enter Registration Number (e.g., GT1234-22): ");
+            
+            // Check for duplicates using BST search - O(log n) average case
+            if (vehicleTree.searchByRegistration(regNumber) != null) {
+                System.out.println("❌ Error: Vehicle with registration " + regNumber + " already exists!");
+                pauseForUser();
+                return;
+            }
+            
+            String type = getStringInputSafe("Enter Vehicle Type (Truck/Van): ");
+            
+            // Input validation - ensure data integrity
+            if (!type.equalsIgnoreCase("Truck") && !type.equalsIgnoreCase("Van")) {
+                System.out.println("❌ Error: Vehicle type must be either 'Truck' or 'Van'");
+                pauseForUser();
+                return;
+            }
+            
+            System.out.print("Enter Current Mileage: ");
+            int mileage = getIntInput();
+            
+            if (mileage < 0) {
+                System.out.println("❌ Error: Mileage cannot be negative!");
+                pauseForUser();
+                return;
+            }
+            
+            System.out.print("Enter Fuel Usage (Litres per 100km): ");
+            double fuelUsage = getDoubleInput();
+            
+            if (fuelUsage <= 0) {
+                System.out.println("❌ Error: Fuel usage must be greater than 0!");
+                pauseForUser();
+                return;
+            }
+            
+            System.out.print("Enter Assigned Driver ID (or press Enter if unassigned): ");
+            String driverId = scanner.nextLine().trim();
+            if (driverId.isEmpty()) {
+                driverId = "UNASSIGNED";
+            }
+            
+            Vehicle newVehicle = new Vehicle(regNumber, type, mileage, fuelUsage, driverId);
+            vehicleTree.insert(newVehicle);
+            
+            System.out.println("\n✅ Vehicle added successfully!");
+            newVehicle.displayInfo();
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error adding vehicle: " + e.getMessage());
+            System.out.println("Please try again.");
+            pauseForUser();
         }
-        
-        System.out.print("Enter Vehicle Type (Truck/Van): ");
-        String type = scanner.nextLine().trim();
-        
-        // Input validation - ensure data integrity
-        if (!type.equalsIgnoreCase("Truck") && !type.equalsIgnoreCase("Van")) {
-            System.out.println("Error: Vehicle type must be either 'Truck' or 'Van'");
-            return;
-        }
-        
-        System.out.print("Enter Current Mileage: ");
-        int mileage = getIntInput();
-        
-        if (mileage < 0) {
-            System.out.println("Error: Mileage cannot be negative!");
-            return;
-        }
-        
-        System.out.print("Enter Fuel Usage (Litres per 100km): ");
-        double fuelUsage = getDoubleInput();
-        
-        if (fuelUsage <= 0) {
-            System.out.println("Error: Fuel usage must be greater than 0!");
-            return;
-        }
-        
-        System.out.print("Enter Assigned Driver ID (or press Enter if unassigned): ");
-        String driverId = scanner.nextLine().trim();
-        if (driverId.isEmpty()) {
-            driverId = "UNASSIGNED";
-        }
-        
-        Vehicle newVehicle = new Vehicle(regNumber, type, mileage, fuelUsage, driverId);
-        vehicleTree.insert(newVehicle);
-        
-        System.out.println("\n✓ Vehicle added successfully!");
-        newVehicle.displayInfo();
     }
 
     private static void removeVehicle() {
-        System.out.println("\n=== Remove Vehicle ===");
-        System.out.print("Enter Registration Number to remove: ");
-        String regNumber = scanner.nextLine();
-        
-        Vehicle vehicle = vehicleTree.searchByRegistration(regNumber);
-        if (vehicle == null) {
-            System.out.println("Error: Vehicle with registration " + regNumber + " not found!");
-            return;
-        }
-        
-        System.out.println("\nVehicle found:");
-        vehicle.displayInfo();
-        
-        System.out.print("\nAre you sure you want to remove this vehicle? (y/n): ");
-        String confirmation = scanner.nextLine();
-        
-        if (confirmation.equalsIgnoreCase("y") || confirmation.equalsIgnoreCase("yes")) {
-            if (vehicleTree.remove(regNumber)) {
-                System.out.println("✓ Vehicle removed successfully!");
-            } else {
-                System.out.println("Error: Failed to remove vehicle.");
+        try {
+            System.out.println("\n=== Remove Vehicle ===");
+            String regNumber = getStringInputSafe("Enter Registration Number to remove: ");
+            
+            Vehicle vehicle = vehicleTree.searchByRegistration(regNumber);
+            if (vehicle == null) {
+                System.out.println("❌ Error: Vehicle with registration " + regNumber + " not found!");
+                pauseForUser();
+                return;
             }
-        } else {
-            System.out.println("Vehicle removal cancelled.");
+            
+            System.out.println("\nVehicle found:");
+            Vehicle.displayTableHeader();
+            vehicle.displayInfo();
+            Vehicle.displayTableFooter();
+            
+            if (getConfirmation("\nAre you sure you want to remove this vehicle?")) {
+                if (vehicleTree.remove(regNumber)) {
+                    System.out.println("✅ Vehicle removed successfully!");
+                } else {
+                    System.out.println("❌ Error: Failed to remove vehicle.");
+                }
+            } else {
+                System.out.println("❌ Vehicle removal cancelled.");
+            }
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error removing vehicle: " + e.getMessage());
+            pauseForUser();
         }
     }
 
     private static void searchByRegistration() {
-        System.out.println("\n=== Search by Registration ===");
-        System.out.print("Enter Registration Number: ");
-        String regNumber = scanner.nextLine();
-        
-        Vehicle found = vehicleTree.searchByRegistration(regNumber);
-        if (found != null) {
-            System.out.println("\n✓ Vehicle found:");
-            found.displayInfo();
-        } else {
-            System.out.println("Vehicle with registration " + regNumber + " not found.");
+        try {
+            System.out.println("\n=== Search by Registration ===");
+            String regNumber = getStringInputSafe("Enter Registration Number: ");
+            
+            Vehicle found = vehicleTree.searchByRegistration(regNumber);
+            if (found != null) {
+                System.out.println("\n✅ Vehicle found:");
+                Vehicle.displayTableHeader();
+                found.displayInfo();
+                Vehicle.displayTableFooter();
+            } else {
+                System.out.println("❌ Vehicle with registration " + regNumber + " not found.");
+            }
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error searching vehicle: " + e.getMessage());
+            pauseForUser();
         }
     }
 
     private static void searchByMileage() {
-        System.out.println("\n=== Search by Mileage ===");
-        System.out.print("Enter Mileage: ");
-        int targetMileage = getIntInput();
-        
-        Vehicle found = vehicleTree.searchByMileage(targetMileage);
-        if (found != null) {
-            System.out.println("\n✓ Vehicle found with mileage " + targetMileage + ":");
-            found.displayInfo();
-        } else {
-            System.out.println("Vehicle with mileage " + targetMileage + " not found.");
+        try {
+            System.out.println("\n=== Search by Mileage ===");
+            System.out.print("Enter Mileage: ");
+            int targetMileage = getIntInput();
+            
+            Vehicle found = vehicleTree.searchByMileage(targetMileage);
+            if (found != null) {
+                System.out.println("\n✅ Vehicle found with mileage " + targetMileage + ":");
+                Vehicle.displayTableHeader();
+                found.displayInfo();
+                Vehicle.displayTableFooter();
+            } else {
+                System.out.println("❌ Vehicle with mileage " + targetMileage + " not found.");
+            }
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error searching vehicle by mileage: " + e.getMessage());
+            pauseForUser();
         }
     }
 
     private static void displayAllVehicles() {
-        vehicleTree.displayAllVehicles();
+        try {
+            vehicleTree.displayAllVehicles();
+            pauseForUser();
+        } catch (Exception e) {
+            System.out.println("❌ Error displaying vehicles: " + e.getMessage());
+            pauseForUser();
+        }
     }
 
     private static void addDriver() {
-        System.out.println("\n=== Add New Driver ===");
-        
-        System.out.print("Enter Driver ID (e.g., D01): ");
-        String driverId = scanner.nextLine();
-        
-        System.out.print("Enter Driver Name: ");
-        String name = scanner.nextLine();
-        
-        System.out.print("Enter Years of Experience: ");
-        int experience = getIntInput();
-        
-        System.out.print("Enter Location/Base: ");
-        String location = scanner.nextLine();
-        
-        Driver newDriver = new Driver(driverId, name, experience, location);
-        driverQueue.enqueue(newDriver);
-        
-        System.out.println("\n✓ Driver added successfully!");
-        newDriver.displayInfo();
+        try {
+            System.out.println("\n=== Add New Driver ===");
+            
+            String driverId = getStringInputSafe("Enter Driver ID (e.g., D01): ");
+            String name = getStringInputSafe("Enter Driver Name: ");
+            
+            System.out.print("Enter Years of Experience: ");
+            int experience = getIntInput();
+            
+            String location = getStringInputSafe("Enter Location/Base: ");
+            
+            Driver newDriver = new Driver(driverId, name, experience, location);
+            driverQueue.enqueue(newDriver);
+            
+            System.out.println("\n✅ Driver added successfully!");
+            Driver.displayTableHeader();
+            newDriver.displayInfo();
+            Driver.displayTableFooter();
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error adding driver: " + e.getMessage());
+            pauseForUser();
+        }
     }
 
     private static void displayAvailableDrivers() {
-        System.out.println("\n=== Available Drivers ===");
-        driverQueue.displayAvailableDrivers();
+        try {
+            System.out.println("\n=== Available Drivers ===");
+            driverQueue.displayAvailableDrivers();
+            pauseForUser();
+        } catch (Exception e) {
+            System.out.println("❌ Error displaying drivers: " + e.getMessage());
+            pauseForUser();
+        }
     }
 
     private static void assignDriver() {
-        System.out.println("\n=== Assign Next Available Driver ===");
-        Driver assignedDriver = driverQueue.dequeue();
-        if (assignedDriver != null) {
-            System.out.println("✓ Driver assigned:");
-            assignedDriver.displayInfo();
-            System.out.println("Note: This driver has been removed from the available queue.");
+        try {
+            System.out.println("\n=== Assign Next Available Driver ===");
+            Driver assignedDriver = driverQueue.dequeue();
+            if (assignedDriver != null) {
+                System.out.println("✅ Driver assigned:");
+                Driver.displayTableHeader();
+                assignedDriver.displayInfo();
+                Driver.displayTableFooter();
+                System.out.println("Note: This driver has been removed from the available queue.");
+            } else {
+                System.out.println("❌ No drivers available for assignment.");
+            }
+            pauseForUser();
+        } catch (Exception e) {
+            System.out.println("❌ Error assigning driver: " + e.getMessage());
+            pauseForUser();
         }
     }
 
     private static void createDeliveryRecord() {
-        System.out.println("\n=== Create Delivery Record ===");
-        
-        System.out.print("Enter Package ID: ");
-        String packageId = scanner.nextLine();
-        
-        System.out.print("Enter Origin Location: ");
-        String origin = scanner.nextLine();
-        
-        System.out.print("Enter Destination: ");
-        String destination = scanner.nextLine();
-        
-        System.out.print("Enter Vehicle Registration Number: ");
-        String vehicleReg = scanner.nextLine();
-        
-        // Verify vehicle exists
-        Vehicle vehicle = vehicleTree.searchByRegistration(vehicleReg);
-        if (vehicle == null) {
-            System.out.println("Error: Vehicle with registration " + vehicleReg + " not found!");
-            System.out.println("Please add the vehicle first or use an existing vehicle.");
-            return;
+        try {
+            System.out.println("\n=== Create Delivery Record ===");
+            
+            String packageId = getStringInputSafe("Enter Package ID: ");
+            String origin = getStringInputSafe("Enter Origin Location: ");
+            String destination = getStringInputSafe("Enter Destination: ");
+            String vehicleReg = getStringInputSafe("Enter Vehicle Registration Number: ");
+            
+            // Verify vehicle exists
+            Vehicle vehicle = vehicleTree.searchByRegistration(vehicleReg);
+            if (vehicle == null) {
+                System.out.println("❌ Error: Vehicle with registration " + vehicleReg + " not found!");
+                System.out.println("Please add the vehicle first or use an existing vehicle.");
+                pauseForUser();
+                return;
+            }
+            
+            String driverId = getStringInputSafe("Enter Driver ID: ");
+            String deliveryTime = getStringInputSafe("Enter Delivery Time: ");
+            
+            Delivery delivery = new Delivery(packageId, origin, destination, vehicleReg, driverId, deliveryTime);
+            
+            // Add delivery to queue
+            deliveryQueue.enqueue(delivery);
+            
+            System.out.println("\n✅ Delivery record created and added to queue successfully!");
+            Delivery.displayTableHeader();
+            delivery.displayInfo();
+            Delivery.displayTableFooter();
+            System.out.println("Status: PENDING - Added to delivery queue");
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error creating delivery record: " + e.getMessage());
+            pauseForUser();
         }
-        
-        System.out.print("Enter Driver ID: ");
-        String driverId = scanner.nextLine();
-        
-        System.out.print("Enter Delivery Time: ");
-        String deliveryTime = scanner.nextLine();
-        
-        Delivery delivery = new Delivery(packageId, origin, destination, vehicleReg, driverId, deliveryTime);
-        
-        // Add delivery to queue
-        deliveryQueue.enqueue(delivery);
-        
-        System.out.println("\n✓ Delivery record created and added to queue successfully!");
-        delivery.displayInfo();
-        System.out.println("Status: PENDING - Added to delivery queue");
     }
 
     private static void viewPendingDeliveries() {
-        System.out.println("\n=== Pending Deliveries ===");
-        deliveryQueue.displayPendingDeliveries();
-        
-        if (!deliveryQueue.isEmpty()) {
-            System.out.println("\nNote: Deliveries are processed in First-In-First-Out (FIFO) order.");
+        try {
+            System.out.println("\n=== Pending Deliveries ===");
+            deliveryQueue.displayPendingDeliveries();
+            
+            if (!deliveryQueue.isEmpty()) {
+                System.out.println("\nNote: Deliveries are processed in First-In-First-Out (FIFO) order.");
+            }
+            pauseForUser();
+        } catch (Exception e) {
+            System.out.println("❌ Error viewing pending deliveries: " + e.getMessage());
+            pauseForUser();
         }
     }
 
     private static void processNextDelivery() {
-        System.out.println("\n=== Process Next Delivery ===");
-        
-        Delivery nextDelivery = deliveryQueue.dequeue();
-        if (nextDelivery != null) {
-            System.out.println("✓ Processing delivery:");
-            nextDelivery.displayInfo();
-            System.out.println("Status: COMPLETED - Delivery has been processed and removed from queue");
+        try {
+            System.out.println("\n=== Process Next Delivery ===");
             
-            // Optional: Update vehicle mileage after delivery
-            updateVehicleMileageAfterDelivery(nextDelivery);
+            Delivery nextDelivery = deliveryQueue.dequeue();
+            if (nextDelivery != null) {
+                System.out.println("✅ Processing delivery:");
+                Delivery.displayTableHeader();
+                nextDelivery.displayInfo();
+                Delivery.displayTableFooter();
+                System.out.println("Status: COMPLETED - Delivery has been processed and removed from queue");
+                
+                // Optional: Update vehicle mileage after delivery
+                updateVehicleMileageAfterDelivery(nextDelivery);
+            } else {
+                System.out.println("❌ No pending deliveries to process.");
+            }
+            pauseForUser();
+        } catch (Exception e) {
+            System.out.println("❌ Error processing delivery: " + e.getMessage());
+            pauseForUser();
         }
     }
 
@@ -416,21 +695,27 @@ public class Main {
     }
 
     private static void createMaintenanceRecord() {
-        System.out.println("\n=== Create Maintenance Record ===");
-        
-        System.out.print("Enter Maintenance Date (YYYY-MM-DD): ");
-        String date = scanner.nextLine();
-        
-        System.out.print("Enter Service Type (e.g., Oil Change, Brake Pads, etc.): ");
-        String serviceType = scanner.nextLine();
-        
-        System.out.print("Enter Cost: GH₵");
-        double cost = getDoubleInput();
-        
-        MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
-        
-        System.out.println("\n✓ Maintenance record created successfully!");
-        maintenance.displayInfo();
+        try {
+            System.out.println("\n=== Create Maintenance Record ===");
+            
+            String date = getStringInputSafe("Enter Maintenance Date (YYYY-MM-DD): ");
+            String serviceType = getStringInputSafe("Enter Service Type (e.g., Oil Change, Brake Pads, etc.): ");
+            
+            System.out.print("Enter Cost: GH₵");
+            double cost = getDoubleInput();
+            
+            MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
+            
+            System.out.println("\n✅ Maintenance record created successfully!");
+            MaintenanceRecord.displayTableHeader();
+            maintenance.displayInfo();
+            MaintenanceRecord.displayTableFooter();
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error creating maintenance record: " + e.getMessage());
+            pauseForUser();
+        }
     }
 
     private static void scheduleMaintenanceTask() {
@@ -458,7 +743,9 @@ public class Main {
         maintenanceScheduler.addTask(task);
         
         System.out.println("\n✓ Maintenance task scheduled successfully!");
+        MaintenanceTask.displayTableHeader();
         task.displayInfo();
+        MaintenanceTask.displayTableFooter();
         
         if (mileage <= 1000) {
             System.out.println("⚠️  WARNING: This vehicle needs urgent maintenance!");
@@ -536,16 +823,83 @@ public class Main {
         }
     }
 
+    // Enhanced input validation method with exception handling for menu navigation
+    private static int getIntInputSafe() {
+        while (true) {
+            try {
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) {
+                    System.out.print("❌ Please enter a number: ");
+                    continue;
+                }
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.print("❌ Invalid input. Please enter a valid number: ");
+            } catch (Exception e) {
+                System.out.println("❌ Unexpected error reading input: " + e.getMessage());
+                System.out.print("Please try again: ");
+            }
+        }
+    }
+
     // Input validation method for decimal numbers - prevents crashes from invalid input
     private static double getDoubleInput() {
         while (true) { // Keep asking until valid input
             try {
-                String input = scanner.nextLine();
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) {
+                    System.out.print("❌ Please enter a number: ");
+                    continue;
+                }
                 return Double.parseDouble(input); // Try to parse as double
             } catch (NumberFormatException e) {
                 // Handle invalid input gracefully
-                System.out.print("Invalid input. Please enter a valid number: ");
+                System.out.print("❌ Invalid input. Please enter a valid decimal number: ");
+            } catch (Exception e) {
+                System.out.println("❌ Unexpected error reading input: " + e.getMessage());
+                System.out.print("Please try again: ");
             }
+        }
+    }
+
+    // Safe string input method with validation
+    private static String getStringInputSafe(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) {
+                    System.out.println("❌ Input cannot be empty. Please try again.");
+                    continue;
+                }
+                return input;
+            } catch (Exception e) {
+                System.out.println("❌ Error reading input: " + e.getMessage());
+                System.out.println("Please try again.");
+            }
+        }
+    }
+
+    // Pause and wait for user before returning to menu
+    private static void pauseForUser() {
+        try {
+            System.out.println("\n" + "=".repeat(60));
+            System.out.print("Press Enter to continue...");
+            scanner.nextLine();
+        } catch (Exception e) {
+            // Handle any input errors gracefully
+        }
+    }
+
+    // Confirmation method for important operations
+    private static boolean getConfirmation(String message) {
+        try {
+            System.out.print(message + " (y/n): ");
+            String input = scanner.nextLine().trim().toLowerCase();
+            return input.equals("y") || input.equals("yes");
+        } catch (Exception e) {
+            System.out.println("❌ Error reading confirmation: " + e.getMessage());
+            return false;
         }
     }
 
@@ -553,102 +907,120 @@ public class Main {
     
     // Generate comprehensive fuel efficiency report with statistics
     private static void generateFuelEfficiencyReport() {
-        System.out.println("\n===== FUEL EFFICIENCY REPORT =====");
-        if (vehicleTree.isEmpty()) {
-            System.out.println("No vehicles in the system.");
-            return;
-        }
-
-        Vehicle[] vehicles = vehicleTree.getAllVehicles();
-        if (vehicles.length == 0) {
-            System.out.println("No vehicles found.");
-            return;
-        }
-
-        double totalFuelUsage = 0;
-        int count = 0;
-
-        System.out.println("\nVehicle Fuel Efficiency Details:");
-        System.out.println("Vehicle ID | Type  | Fuel Usage (L/100km) | Status");
-        System.out.println("-----------|-------|---------------------|--------");
-
-        for (Vehicle vehicle : vehicles) {
-            System.out.printf("%-10s | %-5s | %-19.2f | %s%n", 
-                vehicle.registrationNumber, 
-                vehicle.type, 
-                vehicle.fuelUsage,
-                vehicle.fuelUsage > 15 ? "High Usage" : "Normal");
-            totalFuelUsage += vehicle.fuelUsage;
-            count++;
-        }
-
-        double averageFuelUsage = totalFuelUsage / count;
-        System.out.printf("\nTotal Vehicles: %d%n", count);
-        System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
-        
-        // Find best and worst performers
-        Vehicle mostEfficient = vehicles[0];
-        Vehicle leastEfficient = vehicles[0];
-        
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.fuelUsage < mostEfficient.fuelUsage) {
-                mostEfficient = vehicle;
+        try {
+            System.out.println("\n===== FUEL EFFICIENCY REPORT =====");
+            if (vehicleTree.isEmpty()) {
+                System.out.println("❌ No vehicles in the system.");
+                pauseForUser();
+                return;
             }
-            if (vehicle.fuelUsage > leastEfficient.fuelUsage) {
-                leastEfficient = vehicle;
+
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            if (vehicles.length == 0) {
+                System.out.println("❌ No vehicles found.");
+                pauseForUser();
+                return;
             }
-        }
-        
-        System.out.printf("\nMost Efficient: %s (%.2f L/100km)%n", 
-            mostEfficient.registrationNumber, mostEfficient.fuelUsage);
-        System.out.printf("Least Efficient: %s (%.2f L/100km)%n", 
-            leastEfficient.registrationNumber, leastEfficient.fuelUsage);
-    }
 
-    private static void viewFuelOutliers() {
-        System.out.println("\n===== FUEL EFFICIENCY OUTLIERS =====");
-        if (vehicleTree.isEmpty()) {
-            System.out.println("No vehicles in the system.");
-            return;
-        }
+            double totalFuelUsage = 0;
+            int count = 0;
 
-        Vehicle[] vehicles = vehicleTree.getAllVehicles();
-        if (vehicles.length == 0) {
-            System.out.println("No vehicles found.");
-            return;
-        }
+            System.out.println("\nVehicle Fuel Efficiency Details:");
+            System.out.println("Vehicle ID | Type  | Fuel Usage (L/100km) | Status");
+            System.out.println("-----------|-------|---------------------|--------");
 
-        // Calculate average
-        double totalFuelUsage = 0;
-        for (Vehicle vehicle : vehicles) {
-            totalFuelUsage += vehicle.fuelUsage;
-        }
-        double averageFuelUsage = totalFuelUsage / vehicles.length;
-
-        // Define outlier threshold (vehicles using 50% more than average)
-        double outlierThreshold = averageFuelUsage * 1.5;
-
-        System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
-        System.out.printf("Outlier Threshold: %.2f L/100km%n", outlierThreshold);
-        System.out.println("\nVehicles with High Fuel Usage (Outliers):");
-        System.out.println("Vehicle ID | Type  | Fuel Usage | Excess Usage");
-        System.out.println("-----------|-------|------------|-------------");
-
-        boolean foundOutliers = false;
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.fuelUsage > outlierThreshold) {
-                double excess = vehicle.fuelUsage - averageFuelUsage;
-                System.out.printf("%-10s | %-5s | %-10.2f | +%.2f L/100km%n", 
+            for (Vehicle vehicle : vehicles) {
+                System.out.printf("%-10s | %-5s | %-19.2f | %s%n", 
                     vehicle.registrationNumber, 
                     vehicle.type, 
                     vehicle.fuelUsage,
-                    excess);
-                foundOutliers = true;
+                    vehicle.fuelUsage > 15 ? "High Usage" : "Normal");
+                totalFuelUsage += vehicle.fuelUsage;
+                count++;
             }
-        }
 
-        if (!foundOutliers) {
-            System.out.println("No fuel efficiency outliers found.");
+            double averageFuelUsage = totalFuelUsage / count;
+            System.out.printf("\nTotal Vehicles: %d%n", count);
+            System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
+            
+            // Find best and worst performers
+            Vehicle mostEfficient = vehicles[0];
+            Vehicle leastEfficient = vehicles[0];
+            
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.fuelUsage < mostEfficient.fuelUsage) {
+                    mostEfficient = vehicle;
+                }
+                if (vehicle.fuelUsage > leastEfficient.fuelUsage) {
+                    leastEfficient = vehicle;
+                }
+            }
+            
+            System.out.printf("\nMost Efficient: %s (%.2f L/100km)%n", 
+                mostEfficient.registrationNumber, mostEfficient.fuelUsage);
+            System.out.printf("Least Efficient: %s (%.2f L/100km)%n", 
+                leastEfficient.registrationNumber, leastEfficient.fuelUsage);
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error generating fuel efficiency report: " + e.getMessage());
+            pauseForUser();
+        }
+    }
+
+    private static void viewFuelOutliers() {
+        try {
+            System.out.println("\n===== FUEL EFFICIENCY OUTLIERS =====");
+            if (vehicleTree.isEmpty()) {
+                System.out.println("❌ No vehicles in the system.");
+                pauseForUser();
+                return;
+            }
+
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            if (vehicles.length == 0) {
+                System.out.println("❌ No vehicles found.");
+                pauseForUser();
+                return;
+            }
+
+            // Calculate average
+            double totalFuelUsage = 0;
+            for (Vehicle vehicle : vehicles) {
+                totalFuelUsage += vehicle.fuelUsage;
+            }
+            double averageFuelUsage = totalFuelUsage / vehicles.length;
+
+            // Define outlier threshold (vehicles using 50% more than average)
+            double outlierThreshold = averageFuelUsage * 1.5;
+
+            System.out.printf("Average Fuel Usage: %.2f L/100km%n", averageFuelUsage);
+            System.out.printf("Outlier Threshold: %.2f L/100km%n", outlierThreshold);
+            System.out.println("\nVehicles with High Fuel Usage (Outliers):");
+            System.out.println("Vehicle ID | Type  | Fuel Usage | Excess Usage");
+            System.out.println("-----------|-------|------------|-------------");
+
+            boolean foundOutliers = false;
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.fuelUsage > outlierThreshold) {
+                    double excess = vehicle.fuelUsage - averageFuelUsage;
+                    System.out.printf("%-10s | %-5s | %-10.2f | +%.2f L/100km%n", 
+                        vehicle.registrationNumber, 
+                        vehicle.type, 
+                        vehicle.fuelUsage,
+                        excess);
+                    foundOutliers = true;
+                }
+            }
+
+            if (!foundOutliers) {
+                System.out.println("✅ No fuel efficiency outliers found.");
+            }
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error viewing fuel outliers: " + e.getMessage());
+            pauseForUser();
         }
     }
 
@@ -820,7 +1192,9 @@ public class Main {
             System.out.println("\n✓ Vehicle found using Binary Search:");
             System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
             System.out.println("=".repeat(40));
+            Vehicle.displayTableHeader();
             found.displayInfo();
+            Vehicle.displayTableFooter();
         } else {
             System.out.println("✗ Vehicle with registration '" + regNumber + "' not found.");
             System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
@@ -829,33 +1203,42 @@ public class Main {
 
     // Quick sort vehicles by mileage
     private static void quickSortVehiclesByMileage() {
-        System.out.println("\n===== QUICK SORT BY MILEAGE =====");
-        if (vehicleTree.isEmpty()) {
-            System.out.println("No vehicles in the system.");
-            return;
+        try {
+            System.out.println("\n===== QUICK SORT BY MILEAGE =====");
+            if (vehicleTree.isEmpty()) {
+                System.out.println("❌ No vehicles in the system.");
+                pauseForUser();
+                return;
+            }
+
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            if (vehicles.length == 0) {
+                System.out.println("❌ No vehicles found.");
+                pauseForUser();
+                return;
+            }
+
+            System.out.println("Vehicles before sorting:");
+            displayVehicleArray(vehicles, "Current Order");
+
+            // Record start time for performance analysis
+            long startTime = System.nanoTime();
+            
+            // Perform quick sort
+            quickSortByMileage(vehicles, 0, vehicles.length - 1);
+            
+            long endTime = System.nanoTime();
+            double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+
+            System.out.println("\n✅ Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.println("Vehicles sorted by mileage (ascending):");
+            displayVehicleArray(vehicles, "Sorted by Mileage");
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error sorting vehicles by mileage: " + e.getMessage());
+            pauseForUser();
         }
-
-        Vehicle[] vehicles = vehicleTree.getAllVehicles();
-        if (vehicles.length == 0) {
-            System.out.println("No vehicles found.");
-            return;
-        }
-
-        System.out.println("Vehicles before sorting:");
-        displayVehicleArray(vehicles, "Current Order");
-
-        // Record start time for performance analysis
-        long startTime = System.nanoTime();
-        
-        // Perform quick sort
-        quickSortByMileage(vehicles, 0, vehicles.length - 1);
-        
-        long endTime = System.nanoTime();
-        double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
-
-        System.out.println("\n✓ Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
-        System.out.println("Vehicles sorted by mileage (ascending):");
-        displayVehicleArray(vehicles, "Sorted by Mileage");
     }
 
     // Quick sort recursive implementation
@@ -888,33 +1271,42 @@ public class Main {
 
     // Merge sort vehicles by driver name
     private static void mergeSortVehiclesByDriverName() {
-        System.out.println("\n===== MERGE SORT BY DRIVER NAME =====");
-        if (vehicleTree.isEmpty()) {
-            System.out.println("No vehicles in the system.");
-            return;
+        try {
+            System.out.println("\n===== MERGE SORT BY DRIVER NAME =====");
+            if (vehicleTree.isEmpty()) {
+                System.out.println("❌ No vehicles in the system.");
+                pauseForUser();
+                return;
+            }
+
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            if (vehicles.length == 0) {
+                System.out.println("❌ No vehicles found.");
+                pauseForUser();
+                return;
+            }
+
+            System.out.println("Vehicles before sorting:");
+            displayVehicleArray(vehicles, "Current Order");
+
+            // Record start time for performance analysis
+            long startTime = System.nanoTime();
+            
+            // Perform merge sort
+            mergeSortByDriverName(vehicles, 0, vehicles.length - 1);
+            
+            long endTime = System.nanoTime();
+            double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+
+            System.out.println("\n✅ Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.println("Vehicles sorted by driver name (alphabetical):");
+            displayVehicleArray(vehicles, "Sorted by Driver Name");
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("❌ Error sorting vehicles by driver name: " + e.getMessage());
+            pauseForUser();
         }
-
-        Vehicle[] vehicles = vehicleTree.getAllVehicles();
-        if (vehicles.length == 0) {
-            System.out.println("No vehicles found.");
-            return;
-        }
-
-        System.out.println("Vehicles before sorting:");
-        displayVehicleArray(vehicles, "Current Order");
-
-        // Record start time for performance analysis
-        long startTime = System.nanoTime();
-        
-        // Perform merge sort
-        mergeSortByDriverName(vehicles, 0, vehicles.length - 1);
-        
-        long endTime = System.nanoTime();
-        double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
-
-        System.out.println("\n✓ Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
-        System.out.println("Vehicles sorted by driver name (alphabetical):");
-        displayVehicleArray(vehicles, "Sorted by Driver Name");
     }
 
     // Merge sort recursive implementation
@@ -1007,16 +1399,16 @@ public class Main {
         System.out.println("\n💾 Saving all data to files...");
         
         try {
-            // Save vehicles to vehicles.txt
+            // Save vehicles to data/vehicles.txt
             saveVehiclesToFile();
             
-            // Save drivers to drivers.txt
+            // Save drivers to data/drivers.txt
             saveDriversToFile();
             
-            // Save deliveries to deliveries.txt
+            // Save deliveries to data/deliveries.txt
             saveDeliveriesToFile();
             
-            // Save maintenance tasks to maintenance.txt
+            // Save maintenance tasks to data/maintenance.txt
             saveMaintenanceToFile();
             
             System.out.println("✅ All data saved successfully!");
@@ -1027,7 +1419,7 @@ public class Main {
     }
 
     private static void saveVehiclesToFile() throws IOException {
-        FileWriter writer = new FileWriter("vehicles.txt");
+        FileWriter writer = new FileWriter("data/vehicles.txt");
         PrintWriter pw = new PrintWriter(writer);
         
         Vehicle[] vehicles = vehicleTree.getAllVehicles();
@@ -1045,11 +1437,11 @@ public class Main {
         
         pw.close();
         writer.close();
-        System.out.println("📄 Vehicles saved to vehicles.txt");
+        System.out.println("Vehicles saved to data/vehicles.txt");
     }
 
     private static void saveDriversToFile() throws IOException {
-        FileWriter writer = new FileWriter("drivers.txt");
+        FileWriter writer = new FileWriter("data/drivers.txt");
         PrintWriter pw = new PrintWriter(writer);
         
         Driver[] drivers = driverQueue.getAllDrivers();
@@ -1066,11 +1458,11 @@ public class Main {
         
         pw.close();
         writer.close();
-        System.out.println("📄 Drivers saved to drivers.txt");
+        System.out.println("Drivers saved to data/drivers.txt");
     }
 
     private static void saveDeliveriesToFile() throws IOException {
-        FileWriter writer = new FileWriter("deliveries.txt");
+        FileWriter writer = new FileWriter("data/deliveries.txt");
         PrintWriter pw = new PrintWriter(writer);
         
         Delivery[] deliveries = deliveryQueue.getAllDeliveries();
@@ -1089,11 +1481,11 @@ public class Main {
         
         pw.close();
         writer.close();
-        System.out.println("📄 Deliveries saved to deliveries.txt");
+        System.out.println("Deliveries saved to data/deliveries.txt");
     }
 
     private static void saveMaintenanceToFile() throws IOException {
-        FileWriter writer = new FileWriter("maintenance.txt");
+        FileWriter writer = new FileWriter("data/maintenance.txt");
         PrintWriter pw = new PrintWriter(writer);
         
         MaintenanceTask[] tasks = maintenanceScheduler.getAllTasks();
@@ -1108,7 +1500,7 @@ public class Main {
         
         pw.close();
         writer.close();
-        System.out.println("📄 Maintenance tasks saved to maintenance.txt");
+        System.out.println("Maintenance tasks saved to data/maintenance.txt");
     }
 
     private static void loadAllDataFromFiles() {
@@ -1137,7 +1529,7 @@ public class Main {
     }
 
     private static void loadVehiclesFromFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("vehicles.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("data/vehicles.txt"));
         String line;
         int count = 0;
         
@@ -1162,11 +1554,11 @@ public class Main {
         }
         
         reader.close();
-        System.out.println("📄 Loaded " + count + " vehicles from vehicles.txt");
+        System.out.println("Loaded " + count + " vehicles from data/vehicles.txt");
     }
 
     private static void loadDriversFromFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("drivers.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("data/drivers.txt"));
         String line;
         int count = 0;
         
@@ -1190,11 +1582,11 @@ public class Main {
         }
         
         reader.close();
-        System.out.println("📄 Loaded " + count + " drivers from drivers.txt");
+        System.out.println("Loaded " + count + " drivers from data/drivers.txt");
     }
 
     private static void loadDeliveriesFromFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("deliveries.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("data/deliveries.txt"));
         String line;
         int count = 0;
         
@@ -1220,11 +1612,11 @@ public class Main {
         }
         
         reader.close();
-        System.out.println("📄 Loaded " + count + " deliveries from deliveries.txt");
+        System.out.println("Loaded " + count + " deliveries from data/deliveries.txt");
     }
 
     private static void loadMaintenanceFromFile() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("maintenance.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("data/maintenance.txt"));
         String line;
         int count = 0;
         
@@ -1246,7 +1638,7 @@ public class Main {
         }
         
         reader.close();
-        System.out.println("📄 Loaded " + count + " maintenance tasks from maintenance.txt");
+        System.out.println("Loaded " + count + " maintenance tasks from data/maintenance.txt");
     }
 
     private static void exportSystemReport() {

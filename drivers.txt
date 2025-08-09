@@ -1,2 +1,0 @@
-# Driver Data - DriverId,Name,ExperienceYears,CurrentLocation
-DRV001,John Doe,5,Accra

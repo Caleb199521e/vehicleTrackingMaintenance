@@ -1,2 +1,0 @@
-# Delivery Data - PackageId,Origin,Destination,AssignedVehicle,AssignedDriver,ETA
-PKG001,Kumasi,Takoradi,GT1234-22,DRV001,14:30
