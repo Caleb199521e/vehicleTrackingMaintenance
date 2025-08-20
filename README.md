@@ -15,8 +15,7 @@ vehicleTrackingMaintenance/
 │   │   ├── DeliveryQueue.java    # Circular Queue for deliveries
 │   │   ├── MaintenanceRecord.java    # Maintenance record entity
 │   │   ├── MaintenanceTask.java      # Maintenance task entity
-│   │   ├── MaintenanceScheduler.java # Custom Priority Queue (Min-Heap)
-│   │   └── DynamicArray.java         # Custom dynamic array implementation
+│   │   └── MaintenanceScheduler.java # Custom Priority Queue (Min-Heap)
 │   └── Main.java                 # Main application class
 ├── data/                         # Data Files Directory
 │   ├── vehicles.txt              # Vehicle data storage (50 vehicles)
@@ -37,6 +36,12 @@ vehicleTrackingMaintenance/
   - Professional table-style output formatting
   - No Java Collections used - pure array-based implementation
 
+**Algorithmic Justification**:
+- **Efficient Search**: O(log n) vs O(n) linear search - 50 vehicles require max 6 comparisons vs 25 average
+- **Natural Ordering**: Mileage-based organization enables quick maintenance scheduling
+- **Range Queries**: Perfect for finding vehicles needing service within mileage ranges
+- **Scalability**: Handles fleet growth from 10 to 1000+ vehicles efficiently
+
 ### 2. **Circular Queue (DriverQueue.java & DeliveryQueue.java)**
 - **Purpose**: FIFO management for drivers and deliveries
 - **Key Features**:
@@ -45,6 +50,12 @@ vehicleTrackingMaintenance/
   - Prevents queue overflow with proper size management
   - Table-formatted display for professional output
   - No Java Collections used - custom array implementation
+
+**Algorithmic Justification**:
+- **FIFO Fairness**: Essential for equitable driver assignment and legal compliance
+- **Memory Efficiency**: Circular reuse prevents wasted array space
+- **Constant Time**: O(1) operations maintain responsiveness during peak periods
+- **Bounded Capacity**: Prevents system overload with manageable queue limits
 
 ### 3. **Priority Queue - Min Heap (MaintenanceScheduler.java)**
 - **Purpose**: Prioritizes maintenance tasks by urgency (mileage)
@@ -55,13 +66,11 @@ vehicleTrackingMaintenance/
   - Priority-based task scheduling
   - No Java PriorityQueue used - built from scratch
 
-### 4. **Dynamic Array (DynamicArray.java)**
-- **Purpose**: Resizable array to replace ArrayList functionality
-- **Key Features**:
-  - Automatic resizing when capacity is reached
-  - Generic type support
-  - Add, remove, get, set operations
-  - No Java ArrayList used - custom implementation
+**Algorithmic Justification**:
+- **Safety Critical**: CRITICAL priority (≤500km) processed before MEDIUM (≤2000km)
+- **Efficient Priority Management**: O(log n) insertion/extraction vs O(n) sorted arrays
+- **Always Access Most Urgent**: O(1) peek operation for workshop planning
+- **Dynamic Priorities**: Handles changing vehicle conditions without restructuring
 
 ## 🎯 Data Structure Usage in Main.java
 
@@ -96,13 +105,44 @@ public class Main {
 
 ## 📊 Algorithm Complexities
 
-| Data Structure | Operation | Time Complexity | Space Complexity |
-|----------------|-----------|----------------|------------------|
-| **VehicleTree (BST)** | Insert/Search/Delete | O(log n) avg, O(n) worst | O(n) |
-| **DriverQueue** | Enqueue/Dequeue | O(1) | O(n) |
-| **DeliveryQueue** | Enqueue/Dequeue | O(1) | O(n) |
-| **MaintenanceScheduler** | Insert/Extract-Min | O(log n) | O(n) |
-| **DynamicArray** | Add/Access | O(1) amortized | O(n) |
+| Data Structure | Operation | Time Complexity | Space Complexity | Justification |
+|----------------|-----------|----------------|------------------|---------------|
+| **VehicleTree (BST)** | Insert/Search/Delete | O(log n) avg, O(n) worst | O(n) | Efficient search + natural mileage ordering |
+| **DriverQueue** | Enqueue/Dequeue | O(1) | O(n) | FIFO fairness + constant time operations |
+| **DeliveryQueue** | Enqueue/Dequeue | O(1) | O(n) | Fair scheduling + memory efficiency |
+| **MaintenanceScheduler** | Insert/Extract-Min | O(log n) | O(n) | Priority processing for safety-critical tasks |
+
+## 🔍 Search & Sort Algorithm Justifications
+
+### **Binary Search Implementation**
+```java
+// O(log n) vehicle lookup vs O(n) linear search
+public Vehicle searchByRegistration(String registration) {
+    return searchRecursive(root, registration);
+}
+```
+**Why Binary Search**: Leverages existing BST structure for O(log n) performance. 50 vehicles = max 6 comparisons vs 25 average for linear search.
+
+### **Quick Sort for Numeric Data (Vehicle Mileage)**
+```java
+// O(n log n) average case for integer comparisons
+private static void quickSort(Vehicle[] vehicles, int low, int high)
+```
+**Justification**: Optimal for numeric data with good cache locality. In-place sorting minimizes memory overhead.
+
+### **Merge Sort for String Data (Driver Names)**
+```java
+// O(n log n) guaranteed performance for string comparisons  
+private static void mergeSort(Vehicle[] vehicles, int left, int right)
+```
+**Justification**: Stable sort maintains relative order. Predictable performance for lexicographic string ordering.
+
+### **Weighted Scoring for Smart Driver Assignment**
+```java
+// Multi-criteria optimization: 60% experience + 40% proximity
+double combinedScore = (experienceScore * 0.6) + (proximityScore * 0.4);
+```
+**Justification**: Balances service quality (experience) with operational efficiency (proximity). Configurable weights adapt to business priorities.
 
 ## 🔧 Compilation & Execution
 
