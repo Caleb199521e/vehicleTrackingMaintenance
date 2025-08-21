@@ -175,10 +175,10 @@ public class Main {
                     case 4:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                        System.out.println(" Invalid option. Please enter a number between 1-4.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in driver management: " + e.getMessage());
+                System.out.println("Error in driver management: " + e.getMessage());
             }
         }
     }
