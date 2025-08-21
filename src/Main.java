@@ -90,10 +90,10 @@ public class Main {
                         System.out.println("=".repeat(60));
                         return;
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-8.");
+                        System.out.println(" Invalid option. Please enter a number between 1-8.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ An unexpected error occurred: " + e.getMessage());
+                System.out.println(" An unexpected error occurred: " + e.getMessage());
                 System.out.println("Returning to main menu...");
             }
         }
@@ -138,10 +138,10 @@ public class Main {
                     case 6:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-6.");
+                        System.out.println(" Invalid option. Please enter a number between 1-6.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in vehicle management: " + e.getMessage());
+                System.out.println(" Error in vehicle management: " + e.getMessage());
             }
         }
     }
@@ -151,7 +151,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("👨‍💼           DRIVER MANAGEMENT MENU");
+                System.out.println("           DRIVER MANAGEMENT MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Add New Driver");
                 System.out.println("  2. Display Available Drivers");

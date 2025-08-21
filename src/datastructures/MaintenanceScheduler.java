@@ -3,7 +3,7 @@ package datastructures;
 /**
  * MaintenanceScheduler class - manages maintenance tasks using custom priority queue (min-heap)
  * Tasks are prioritized by mileage (lower mileage = higher priority)
- * Custom implementation using arrays - no Java collections used
+ 
  */
 public class MaintenanceScheduler {
     private static final int MAX_TASKS = 100;
