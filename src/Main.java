@@ -1,4 +1,4 @@
-import datastructures.*;
+﻿import datastructures.*;
 import java.util.Scanner;
 import java.io.*;
 
@@ -188,7 +188,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("📦           DELIVERY OPERATIONS MENU");
+                System.out.println("           DELIVERY OPERATIONS MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Create New Delivery Record");
                 System.out.println("  2. View Pending Deliveries");
@@ -212,10 +212,10 @@ public class Main {
                     case 4:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                        System.out.println(" Invalid option. Please enter a number between 1-4.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in delivery operations: " + e.getMessage());
+                System.out.println(" Error in delivery operations: " + e.getMessage());
             }
         }
     }
@@ -225,7 +225,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("🔧           MAINTENANCE MANAGEMENT MENU");
+                System.out.println("           MAINTENANCE MANAGEMENT MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Create Maintenance Record");
                 System.out.println("  2. Schedule Maintenance Task");
@@ -257,10 +257,10 @@ public class Main {
                     case 6:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-6.");
+                        System.out.println("Error: Invalid option. Please enter a number between 1-6.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in maintenance management: " + e.getMessage());
+                System.out.println("Error in maintenance management: " + e.getMessage());
             }
         }
     }
@@ -270,7 +270,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("⛽           FUEL EFFICIENCY REPORTS MENU");
+                System.out.println("           FUEL EFFICIENCY REPORTS MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Generate Fuel Efficiency Report");
                 System.out.println("  2. View Fuel Outliers");
@@ -298,10 +298,10 @@ public class Main {
                     case 5:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-5.");
+                        System.out.println("Error: Invalid option. Please enter a number between 1-5.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in fuel efficiency reports: " + e.getMessage());
+                System.out.println("Error in fuel efficiency reports: " + e.getMessage());
             }
         }
     }
@@ -311,7 +311,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("🔍           SEARCH & SORT FEATURES MENU");
+                System.out.println("           SEARCH & SORT FEATURES MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Binary Search by Registration Number");
                 System.out.println("  2. Quick Sort Vehicles by Mileage");
@@ -335,10 +335,10 @@ public class Main {
                     case 4:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                        System.out.println("Error: Invalid option. Please enter a number between 1-4.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in search & sort features: " + e.getMessage());
+                System.out.println("Error in search & sort features: " + e.getMessage());
             }
         }
     }
@@ -348,7 +348,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("\n" + "=".repeat(60));
-                System.out.println("💾           FILE STORAGE MENU");
+                System.out.println("           FILE STORAGE MENU");
                 System.out.println("=".repeat(60));
                 System.out.println("  1. Save All Data to Files");
                 System.out.println("  2. Load All Data from Files");
@@ -372,10 +372,10 @@ public class Main {
                     case 4:
                         return; // Go back to main menu
                     default:
-                        System.out.println("❌ Invalid option. Please enter a number between 1-4.");
+                        System.out.println("Error: Invalid option. Please enter a number between 1-4.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error in file storage operations: " + e.getMessage());
+                System.out.println("Error: Error in file storage operations: " + e.getMessage());
             }
         }
     }
@@ -391,7 +391,7 @@ public class Main {
             
             // Check for duplicates using BST search - O(log n) average case
             if (vehicleTree.searchByRegistration(regNumber) != null) {
-                System.out.println("❌ Error: Vehicle with registration " + regNumber + " already exists!");
+                System.out.println("Error: Error: Vehicle with registration " + regNumber + " already exists!");
                 pauseForUser();
                 return;
             }
@@ -400,7 +400,7 @@ public class Main {
             
             // Input validation - ensure data integrity
             if (!type.equalsIgnoreCase("Truck") && !type.equalsIgnoreCase("Van")) {
-                System.out.println("❌ Error: Vehicle type must be either 'Truck' or 'Van'");
+                System.out.println("Error: Error: Vehicle type must be either 'Truck' or 'Van'");
                 pauseForUser();
                 return;
             }
@@ -409,7 +409,7 @@ public class Main {
             int mileage = getIntInput();
             
             if (mileage < 0) {
-                System.out.println("❌ Error: Mileage cannot be negative!");
+                System.out.println("Error: Error: Mileage cannot be negative!");
                 pauseForUser();
                 return;
             }
@@ -418,7 +418,7 @@ public class Main {
             double fuelUsage = getDoubleInput();
             
             if (fuelUsage <= 0) {
-                System.out.println("❌ Error: Fuel usage must be greater than 0!");
+                System.out.println("Error: Error: Fuel usage must be greater than 0!");
                 pauseForUser();
                 return;
             }
@@ -432,12 +432,12 @@ public class Main {
             Vehicle newVehicle = new Vehicle(regNumber, type, mileage, fuelUsage, driverId);
             vehicleTree.insert(newVehicle);
             
-            System.out.println("\n✅ Vehicle added successfully!");
+            System.out.println("\nSuccess: Vehicle added successfully!");
             newVehicle.displayInfo();
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error adding vehicle: " + e.getMessage());
+            System.out.println("Error: Error adding vehicle: " + e.getMessage());
             System.out.println("Please try again.");
             pauseForUser();
         }
@@ -450,7 +450,7 @@ public class Main {
             
             Vehicle vehicle = vehicleTree.searchByRegistration(regNumber);
             if (vehicle == null) {
-                System.out.println("❌ Error: Vehicle with registration " + regNumber + " not found!");
+                System.out.println("Error: Error: Vehicle with registration " + regNumber + " not found!");
                 pauseForUser();
                 return;
             }
@@ -462,17 +462,17 @@ public class Main {
             
             if (getConfirmation("\nAre you sure you want to remove this vehicle?")) {
                 if (vehicleTree.remove(regNumber)) {
-                    System.out.println("✅ Vehicle removed successfully!");
+                    System.out.println("Success: Vehicle removed successfully!");
                 } else {
-                    System.out.println("❌ Error: Failed to remove vehicle.");
+                    System.out.println("Error: Error: Failed to remove vehicle.");
                 }
             } else {
-                System.out.println("❌ Vehicle removal cancelled.");
+                System.out.println("Error: Vehicle removal cancelled.");
             }
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error removing vehicle: " + e.getMessage());
+            System.out.println("Error: Error removing vehicle: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -484,17 +484,17 @@ public class Main {
             
             Vehicle found = vehicleTree.searchByRegistration(regNumber);
             if (found != null) {
-                System.out.println("\n✅ Vehicle found:");
+                System.out.println("\nSuccess: Vehicle found:");
                 Vehicle.displayTableHeader();
                 found.displayInfo();
                 Vehicle.displayTableFooter();
             } else {
-                System.out.println("❌ Vehicle with registration " + regNumber + " not found.");
+                System.out.println("Error: Vehicle with registration " + regNumber + " not found.");
             }
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error searching vehicle: " + e.getMessage());
+            System.out.println("Error: Error searching vehicle: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -507,17 +507,17 @@ public class Main {
             
             Vehicle found = vehicleTree.searchByMileage(targetMileage);
             if (found != null) {
-                System.out.println("\n✅ Vehicle found with mileage " + targetMileage + ":");
+                System.out.println("\nSuccess: Vehicle found with mileage " + targetMileage + ":");
                 Vehicle.displayTableHeader();
                 found.displayInfo();
                 Vehicle.displayTableFooter();
             } else {
-                System.out.println("❌ Vehicle with mileage " + targetMileage + " not found.");
+                System.out.println("Error: Vehicle with mileage " + targetMileage + " not found.");
             }
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error searching vehicle by mileage: " + e.getMessage());
+            System.out.println("Error: Error searching vehicle by mileage: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -527,7 +527,7 @@ public class Main {
             vehicleTree.displayAllVehicles();
             pauseForUser();
         } catch (Exception e) {
-            System.out.println("❌ Error displaying vehicles: " + e.getMessage());
+            System.out.println("Error: Error displaying vehicles: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -547,14 +547,14 @@ public class Main {
             Driver newDriver = new Driver(driverId, name, experience, location);
             driverQueue.enqueue(newDriver);
             
-            System.out.println("\n✅ Driver added successfully!");
+            System.out.println("\nSuccess: Driver added successfully!");
             Driver.displayTableHeader();
             newDriver.displayInfo();
             Driver.displayTableFooter();
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error adding driver: " + e.getMessage());
+            System.out.println("Error: Error adding driver: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -565,7 +565,7 @@ public class Main {
             driverQueue.displayAvailableDrivers();
             pauseForUser();
         } catch (Exception e) {
-            System.out.println("❌ Error displaying drivers: " + e.getMessage());
+            System.out.println("Error: Error displaying drivers: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -575,17 +575,17 @@ public class Main {
             System.out.println("\n=== Assign Next Available Driver ===");
             Driver assignedDriver = driverQueue.dequeue();
             if (assignedDriver != null) {
-                System.out.println("✅ Driver assigned:");
+                System.out.println("Success: Driver assigned:");
                 Driver.displayTableHeader();
                 assignedDriver.displayInfo();
                 Driver.displayTableFooter();
                 System.out.println("Note: This driver has been removed from the available queue.");
             } else {
-                System.out.println("❌ No drivers available for assignment.");
+                System.out.println("Error: No drivers available for assignment.");
             }
             pauseForUser();
         } catch (Exception e) {
-            System.out.println("❌ Error assigning driver: " + e.getMessage());
+            System.out.println("Error: Error assigning driver: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -602,7 +602,7 @@ public class Main {
             // Verify vehicle exists
             Vehicle vehicle = vehicleTree.searchByRegistration(vehicleReg);
             if (vehicle == null) {
-                System.out.println("❌ Error: Vehicle with registration " + vehicleReg + " not found!");
+                System.out.println("Error: Error: Vehicle with registration " + vehicleReg + " not found!");
                 System.out.println("Please add the vehicle first or use an existing vehicle.");
                 pauseForUser();
                 return;
@@ -616,7 +616,7 @@ public class Main {
             // Add delivery to queue
             deliveryQueue.enqueue(delivery);
             
-            System.out.println("\n✅ Delivery record created and added to queue successfully!");
+            System.out.println("\nSuccess: Delivery record created and added to queue successfully!");
             Delivery.displayTableHeader();
             delivery.displayInfo();
             Delivery.displayTableFooter();
@@ -624,7 +624,7 @@ public class Main {
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error creating delivery record: " + e.getMessage());
+            System.out.println("Error: Error creating delivery record: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -639,7 +639,7 @@ public class Main {
             }
             pauseForUser();
         } catch (Exception e) {
-            System.out.println("❌ Error viewing pending deliveries: " + e.getMessage());
+            System.out.println("Error: Error viewing pending deliveries: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -650,7 +650,7 @@ public class Main {
             
             Delivery nextDelivery = deliveryQueue.dequeue();
             if (nextDelivery != null) {
-                System.out.println("✅ Processing delivery:");
+                System.out.println("Success: Processing delivery:");
                 Delivery.displayTableHeader();
                 nextDelivery.displayInfo();
                 Delivery.displayTableFooter();
@@ -659,11 +659,11 @@ public class Main {
                 // Optional: Update vehicle mileage after delivery
                 updateVehicleMileageAfterDelivery(nextDelivery);
             } else {
-                System.out.println("❌ No pending deliveries to process.");
+                System.out.println("Error: No pending deliveries to process.");
             }
             pauseForUser();
         } catch (Exception e) {
-            System.out.println("❌ Error processing delivery: " + e.getMessage());
+            System.out.println("Error: Error processing delivery: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -682,7 +682,7 @@ public class Main {
                 if (vehicle != null) {
                     int currentMileage = vehicle.mileage;
                     vehicle.mileage = currentMileage + additionalMileage;
-                    System.out.println("✓ Vehicle mileage updated:");
+                    System.out.println("Success: Vehicle mileage updated:");
                     System.out.println("  Vehicle: " + delivery.assignedVehicle);
                     System.out.println("  Previous mileage: " + currentMileage + " km");
                     System.out.println("  Additional mileage: " + additionalMileage + " km");
@@ -706,14 +706,14 @@ public class Main {
             
             MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
             
-            System.out.println("\n✅ Maintenance record created successfully!");
+            System.out.println("\nSuccess: Maintenance record created successfully!");
             MaintenanceRecord.displayTableHeader();
             maintenance.displayInfo();
             MaintenanceRecord.displayTableFooter();
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error creating maintenance record: " + e.getMessage());
+            System.out.println("Error: Error creating maintenance record: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -742,15 +742,15 @@ public class Main {
         MaintenanceTask task = new MaintenanceTask(vehicleReg, mileage);
         maintenanceScheduler.addTask(task);
         
-        System.out.println("\n✓ Maintenance task scheduled successfully!");
+        System.out.println("\nSuccess: Maintenance task scheduled successfully!");
         MaintenanceTask.displayTableHeader();
         task.displayInfo();
         MaintenanceTask.displayTableFooter();
         
         if (mileage <= 1000) {
-            System.out.println("⚠️  WARNING: This vehicle needs urgent maintenance!");
+            System.out.println("WARNING:  WARNING: This vehicle needs urgent maintenance!");
         } else if (mileage <= 2000) {
-            System.out.println("🔔 NOTICE: This vehicle will need maintenance soon.");
+            System.out.println("NOTICE: NOTICE: This vehicle will need maintenance soon.");
         }
     }
 
@@ -785,7 +785,7 @@ public class Main {
         System.out.println("=".repeat(60));
         maintenanceScheduler.showAllTasks();
         
-        System.out.println("\n🚨 Priority Levels:");
+        System.out.println("\nPRIORITY: Priority Levels:");
         System.out.println("   0-500 km:    CRITICAL - Immediate service required");
         System.out.println("   501-1000 km: HIGH - Service needed soon");
         System.out.println("   1001-2000 km: MEDIUM - Schedule service");
@@ -806,7 +806,7 @@ public class Main {
         
         MaintenanceRecord maintenance = new MaintenanceRecord(date, serviceType, cost);
         
-        System.out.println("\n✓ Maintenance record created successfully!");
+        System.out.println("\nSuccess: Maintenance record created successfully!");
         maintenance.displayInfo();
     }
 
@@ -829,14 +829,14 @@ public class Main {
             try {
                 String input = scanner.nextLine().trim();
                 if (input.isEmpty()) {
-                    System.out.print("❌ Please enter a number: ");
+                    System.out.print("Error: Please enter a number: ");
                     continue;
                 }
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.print("❌ Invalid input. Please enter a valid number: ");
+                System.out.print("Error: Invalid input. Please enter a valid number: ");
             } catch (Exception e) {
-                System.out.println("❌ Unexpected error reading input: " + e.getMessage());
+                System.out.println("Error: Unexpected error reading input: " + e.getMessage());
                 System.out.print("Please try again: ");
             }
         }
@@ -848,15 +848,15 @@ public class Main {
             try {
                 String input = scanner.nextLine().trim();
                 if (input.isEmpty()) {
-                    System.out.print("❌ Please enter a number: ");
+                    System.out.print("Error: Please enter a number: ");
                     continue;
                 }
                 return Double.parseDouble(input); // Try to parse as double
             } catch (NumberFormatException e) {
                 // Handle invalid input gracefully
-                System.out.print("❌ Invalid input. Please enter a valid decimal number: ");
+                System.out.print("Error: Invalid input. Please enter a valid decimal number: ");
             } catch (Exception e) {
-                System.out.println("❌ Unexpected error reading input: " + e.getMessage());
+                System.out.println("Error: Unexpected error reading input: " + e.getMessage());
                 System.out.print("Please try again: ");
             }
         }
@@ -869,12 +869,12 @@ public class Main {
                 System.out.print(prompt);
                 String input = scanner.nextLine().trim();
                 if (input.isEmpty()) {
-                    System.out.println("❌ Input cannot be empty. Please try again.");
+                    System.out.println("Error: Input cannot be empty. Please try again.");
                     continue;
                 }
                 return input;
             } catch (Exception e) {
-                System.out.println("❌ Error reading input: " + e.getMessage());
+                System.out.println("Error: Error reading input: " + e.getMessage());
                 System.out.println("Please try again.");
             }
         }
@@ -898,7 +898,7 @@ public class Main {
             String input = scanner.nextLine().trim().toLowerCase();
             return input.equals("y") || input.equals("yes");
         } catch (Exception e) {
-            System.out.println("❌ Error reading confirmation: " + e.getMessage());
+            System.out.println("Error: Error reading confirmation: " + e.getMessage());
             return false;
         }
     }
@@ -910,14 +910,14 @@ public class Main {
         try {
             System.out.println("\n===== FUEL EFFICIENCY REPORT =====");
             if (vehicleTree.isEmpty()) {
-                System.out.println("❌ No vehicles in the system.");
+                System.out.println("Error: No vehicles in the system.");
                 pauseForUser();
                 return;
             }
 
             Vehicle[] vehicles = vehicleTree.getAllVehicles();
             if (vehicles.length == 0) {
-                System.out.println("❌ No vehicles found.");
+                System.out.println("Error: No vehicles found.");
                 pauseForUser();
                 return;
             }
@@ -963,7 +963,7 @@ public class Main {
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error generating fuel efficiency report: " + e.getMessage());
+            System.out.println("Error: Error generating fuel efficiency report: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -972,14 +972,14 @@ public class Main {
         try {
             System.out.println("\n===== FUEL EFFICIENCY OUTLIERS =====");
             if (vehicleTree.isEmpty()) {
-                System.out.println("❌ No vehicles in the system.");
+                System.out.println("Error: No vehicles in the system.");
                 pauseForUser();
                 return;
             }
 
             Vehicle[] vehicles = vehicleTree.getAllVehicles();
             if (vehicles.length == 0) {
-                System.out.println("❌ No vehicles found.");
+                System.out.println("Error: No vehicles found.");
                 pauseForUser();
                 return;
             }
@@ -1014,12 +1014,12 @@ public class Main {
             }
 
             if (!foundOutliers) {
-                System.out.println("✅ No fuel efficiency outliers found.");
+                System.out.println("Success: No fuel efficiency outliers found.");
             }
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error viewing fuel outliers: " + e.getMessage());
+            System.out.println("Error: Error viewing fuel outliers: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -1189,14 +1189,14 @@ public class Main {
         double searchTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
 
         if (found != null) {
-            System.out.println("\n✓ Vehicle found using Binary Search:");
+            System.out.println("\nSuccess: Vehicle found using Binary Search:");
             System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
             System.out.println("=".repeat(40));
             Vehicle.displayTableHeader();
             found.displayInfo();
             Vehicle.displayTableFooter();
         } else {
-            System.out.println("✗ Vehicle with registration '" + regNumber + "' not found.");
+            System.out.println("Error: Vehicle with registration '" + regNumber + "' not found.");
             System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
         }
     }
@@ -1206,14 +1206,14 @@ public class Main {
         try {
             System.out.println("\n===== QUICK SORT BY MILEAGE =====");
             if (vehicleTree.isEmpty()) {
-                System.out.println("❌ No vehicles in the system.");
+                System.out.println("Error: No vehicles in the system.");
                 pauseForUser();
                 return;
             }
 
             Vehicle[] vehicles = vehicleTree.getAllVehicles();
             if (vehicles.length == 0) {
-                System.out.println("❌ No vehicles found.");
+                System.out.println("Error: No vehicles found.");
                 pauseForUser();
                 return;
             }
@@ -1230,13 +1230,13 @@ public class Main {
             long endTime = System.nanoTime();
             double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
 
-            System.out.println("\n✅ Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.println("\nSuccess: Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
             System.out.println("Vehicles sorted by mileage (ascending):");
             displayVehicleArray(vehicles, "Sorted by Mileage");
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error sorting vehicles by mileage: " + e.getMessage());
+            System.out.println("Error: Error sorting vehicles by mileage: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -1274,14 +1274,14 @@ public class Main {
         try {
             System.out.println("\n===== MERGE SORT BY DRIVER NAME =====");
             if (vehicleTree.isEmpty()) {
-                System.out.println("❌ No vehicles in the system.");
+                System.out.println("Error: No vehicles in the system.");
                 pauseForUser();
                 return;
             }
 
             Vehicle[] vehicles = vehicleTree.getAllVehicles();
             if (vehicles.length == 0) {
-                System.out.println("❌ No vehicles found.");
+                System.out.println("Error: No vehicles found.");
                 pauseForUser();
                 return;
             }
@@ -1298,13 +1298,13 @@ public class Main {
             long endTime = System.nanoTime();
             double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
 
-            System.out.println("\n✅ Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.println("\nSuccess: Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
             System.out.println("Vehicles sorted by driver name (alphabetical):");
             displayVehicleArray(vehicles, "Sorted by Driver Name");
             pauseForUser();
             
         } catch (Exception e) {
-            System.out.println("❌ Error sorting vehicles by driver name: " + e.getMessage());
+            System.out.println("Error: Error sorting vehicles by driver name: " + e.getMessage());
             pauseForUser();
         }
     }
@@ -1396,7 +1396,7 @@ public class Main {
 
     // File Storage Methods
     private static void saveAllDataToFiles() {
-        System.out.println("\n💾 Saving all data to files...");
+        System.out.println("\n Saving all data to files...");
         
         try {
             // Save vehicles to data/vehicles.txt
@@ -1411,10 +1411,10 @@ public class Main {
             // Save maintenance tasks to data/maintenance.txt
             saveMaintenanceToFile();
             
-            System.out.println("✅ All data saved successfully!");
+            System.out.println("Success: All data saved successfully!");
             
         } catch (IOException e) {
-            System.out.println("❌ Error saving data: " + e.getMessage());
+            System.out.println("Error: Error saving data: " + e.getMessage());
         }
     }
 
@@ -1504,7 +1504,7 @@ public class Main {
     }
 
     private static void loadAllDataFromFiles() {
-        System.out.println("\n📂 Loading all data from files...");
+        System.out.println("\n Loading all data from files...");
         
         try {
             // Clear existing data
@@ -1519,12 +1519,12 @@ public class Main {
             loadDeliveriesFromFile();
             loadMaintenanceFromFile();
             
-            System.out.println("✅ All data loaded successfully!");
+            System.out.println("Success: All data loaded successfully!");
             
         } catch (IOException e) {
-            System.out.println("❌ Error loading data: " + e.getMessage());
+            System.out.println("Error: Error loading data: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("❌ Error parsing data: " + e.getMessage());
+            System.out.println("Error: Error parsing data: " + e.getMessage());
         }
     }
 
@@ -1642,7 +1642,7 @@ public class Main {
     }
 
     private static void exportSystemReport() {
-        System.out.println("\n📊 Generating comprehensive system report...");
+        System.out.println("\n Generating comprehensive system report...");
         
         try {
             FileWriter writer = new FileWriter("system_report.txt");
@@ -1747,11 +1747,11 @@ public class Main {
             pw.close();
             writer.close();
             
-            System.out.println("✅ System report exported to system_report.txt");
-            System.out.println("📊 Report includes vehicle, driver, delivery, and maintenance summaries");
+            System.out.println("Success: System report exported to system_report.txt");
+            System.out.println(" Report includes vehicle, driver, delivery, and maintenance summaries");
             
         } catch (IOException e) {
-            System.out.println("❌ Error generating report: " + e.getMessage());
+            System.out.println("Error: Error generating report: " + e.getMessage());
         }
     }
 }

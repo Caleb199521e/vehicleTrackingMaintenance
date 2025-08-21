@@ -1,6 +1,6 @@
-# Vehicle Tracking & Maintenance System - Data Structures Organization
+﻿# Vehicle Tracking & Maintenance System - Data Structures Organization
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 vehicleTrackingMaintenance/
@@ -25,7 +25,7 @@ vehicleTrackingMaintenance/
 └── vehicleTrackingMaintenance.iml # IntelliJ project configuration
 ```
 
-## 🛠️ Custom Data Structures Implemented
+## Custom Data Structures Implemented
 
 ### 1. **Binary Search Tree (VehicleTree.java)**
 - **Purpose**: Manages vehicles efficiently with O(log n) search/insert/delete
@@ -72,7 +72,7 @@ vehicleTrackingMaintenance/
 - **Always Access Most Urgent**: O(1) peek operation for workshop planning
 - **Dynamic Priorities**: Handles changing vehicle conditions without restructuring
 
-## 🎯 Data Structure Usage in Main.java
+## Data Structure Usage in Main.java
 
 ```java
 // Import custom data structures package
@@ -103,7 +103,7 @@ public class Main {
 }
 ```
 
-## 📊 Algorithm Complexities
+## Algorithm Complexities
 
 | Data Structure | Operation | Time Complexity | Space Complexity | Justification |
 |----------------|-----------|----------------|------------------|---------------|
@@ -112,7 +112,7 @@ public class Main {
 | **DeliveryQueue** | Enqueue/Dequeue | O(1) | O(n) | Fair scheduling + memory efficiency |
 | **MaintenanceScheduler** | Insert/Extract-Min | O(log n) | O(n) | Priority processing for safety-critical tasks |
 
-## 🔍 Search & Sort Algorithm Justifications
+## Search & Sort Algorithm Justifications
 
 ### **Binary Search Implementation**
 ```java
@@ -144,7 +144,7 @@ double combinedScore = (experienceScore * 0.6) + (proximityScore * 0.4);
 ```
 **Justification**: Balances service quality (experience) with operational efficiency (proximity). Configurable weights adapt to business priorities.
 
-## 🔧 Compilation & Execution
+## Compilation & Execution
 
 ```bash
 # Navigate to project directory
@@ -163,7 +163,7 @@ java -cp src Main
 # - data/maintenance.txt (maintenance tasks)
 ```
 
-## 💾 Data Management
+## Data Management
 
 ### File Organization
 - **Centralized Data Storage**: All data files organized in `data/` folder
@@ -188,24 +188,24 @@ All outputs use consistent table formatting:
 +--------------+-------+----------+------------+--------------+
 ```
 
-## ✅ No Java Collections Used
+## No Java Collections Used
 
 This project demonstrates **pure custom data structure implementations**:
 
-- ❌ No `java.util.ArrayList`
-- ❌ No `java.util.LinkedList`  
-- ❌ No `java.util.Queue`
-- ❌ No `java.util.PriorityQueue`
-- ❌ No `java.util.HashMap`
-- ❌ No `java.util.TreeMap`
+- No `java.util.ArrayList`
+- No `java.util.LinkedList`  
+- No `java.util.Queue`
+- No `java.util.PriorityQueue`
+- No `java.util.HashMap`
+- No `java.util.TreeMap`
 
-- ✅ Custom Binary Search Tree
-- ✅ Custom Circular Queues
-- ✅ Custom Priority Queue (Min-Heap)
-- ✅ Custom Dynamic Array
-- ✅ Array-based implementations only
+- Custom Binary Search Tree
+- Custom Circular Queues
+- Custom Priority Queue (Min-Heap)
+- Custom Dynamic Array
+- Array-based implementations only
 
-## 🚀 Key Features Implemented
+## Key Features Implemented
 
 ### Core Functionality
 1. **Vehicle Management**: BST for efficient vehicle organization
@@ -228,7 +228,7 @@ This project demonstrates **pure custom data structure implementations**:
 - **Ghana-Localized**: Currency, locations, and terminology for Ghana
 - **Academic Standards**: Pure algorithmic implementations without Java Collections
 
-## 📝 Academic Requirements Met
+## Academic Requirements Met
 
 - **Custom Data Structures**: All major data structures coded from scratch
 - **Algorithm Implementation**: Search, sort, and heap algorithms implemented
@@ -239,7 +239,7 @@ This project demonstrates **pure custom data structure implementations**:
 - **Real-world Application**: Practical vehicle tracking system with Ghana-specific features
 - **Clean Project Structure**: Organized data files and source code separation
 
-## 🎯 System Menu Structure
+## System Menu Structure
 
 ```
 MAIN MENU
