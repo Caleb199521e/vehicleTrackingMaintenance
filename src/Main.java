@@ -1170,34 +1170,40 @@ public class Main {
     
     // Binary search for vehicle by registration number
     private static void binarySearchByRegistration() {
-        System.out.println("\n===== BINARY SEARCH BY REGISTRATION =====");
-        if (vehicleTree.isEmpty()) {
-            System.out.println("No vehicles in the system.");
-            return;
-        }
+        try {
+            System.out.println("\n===== BINARY SEARCH BY REGISTRATION =====");
+            if (vehicleTree.isEmpty()) {
+                System.out.println("Error: No vehicles in the system.");
+                pauseForUser();
+                return;
+            }
 
-        System.out.print("Enter Registration Number to search: ");
-        String regNumber = scanner.nextLine().trim();
+            String regNumber = getStringInputSafe("Enter Registration Number to search: ");
 
-        // Record start time for performance analysis
-        long startTime = System.nanoTime();
-        
-        // Perform binary search
-        Vehicle found = vehicleTree.binarySearchByRegistration(regNumber);
-        
-        long endTime = System.nanoTime();
-        double searchTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+            // Get all vehicles and perform binary search using custom implementation
+            Vehicle[] vehicles = vehicleTree.getAllVehicles();
+            
+            // Use custom BinarySearch class with performance tracking
+            BinarySearch.BinarySearchResult result = BinarySearch.searchWithPerformanceTracking(vehicles, regNumber);
 
-        if (found != null) {
-            System.out.println("\nSuccess: Vehicle found using Binary Search:");
-            System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
-            System.out.println("=".repeat(40));
-            Vehicle.displayTableHeader();
-            found.displayInfo();
-            Vehicle.displayTableFooter();
-        } else {
-            System.out.println("Error: Vehicle with registration '" + regNumber + "' not found.");
-            System.out.println("Search completed in: " + String.format("%.3f", searchTime) + " ms");
+            if (result.isFound()) {
+                System.out.println("\n✓ Vehicle found using Binary Search:");
+                System.out.printf("Search completed in: %.3f ms%n", result.searchTimeMs);
+                System.out.printf("Number of comparisons: %d%n", result.comparisons);
+                System.out.println("=".repeat(40));
+                Vehicle.displayTableHeader();
+                result.vehicle.displayInfo();
+                Vehicle.displayTableFooter();
+            } else {
+                System.out.println("✗ Vehicle with registration '" + regNumber + "' not found.");
+                System.out.printf("Search completed in: %.3f ms%n", result.searchTimeMs);
+                System.out.printf("Number of comparisons: %d%n", result.comparisons);
+            }
+            pauseForUser();
+            
+        } catch (Exception e) {
+            System.out.println("Error: Error in binary search: " + e.getMessage());
+            pauseForUser();
         }
     }
 
@@ -1221,52 +1227,18 @@ public class Main {
             System.out.println("Vehicles before sorting:");
             displayVehicleArray(vehicles, "Current Order");
 
-            // Record start time for performance analysis
-            long startTime = System.nanoTime();
-            
-            // Perform quick sort
-            quickSortByMileage(vehicles, 0, vehicles.length - 1);
-            
-            long endTime = System.nanoTime();
-            double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+            // Use custom QuickSort class with performance tracking
+            QuickSort.QuickSortResult result = QuickSort.sortWithPerformanceTracking(vehicles, "mileage");
 
-            System.out.println("\nSuccess: Quick Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.printf("\n✓ Quick Sort completed in: %.3f ms%n", result.sortTimeMs);
             System.out.println("Vehicles sorted by mileage (ascending):");
-            displayVehicleArray(vehicles, "Sorted by Mileage");
+            displayVehicleArray(result.sortedVehicles, "Sorted by Mileage");
             pauseForUser();
             
         } catch (Exception e) {
             System.out.println("Error: Error sorting vehicles by mileage: " + e.getMessage());
             pauseForUser();
         }
-    }
-
-    // Quick sort recursive implementation
-    private static void quickSortByMileage(Vehicle[] vehicles, int low, int high) {
-        if (low < high) {
-            // Partition the array and get the pivot index
-            int partitionIndex = partitionByMileage(vehicles, low, high);
-            
-            // Recursively sort elements before and after partition
-            quickSortByMileage(vehicles, low, partitionIndex - 1);  // Sort left sub-array
-            quickSortByMileage(vehicles, partitionIndex + 1, high); // Sort right sub-array
-        }
-    }
-
-    // Partition method for quick sort (using last element as pivot)
-    private static int partitionByMileage(Vehicle[] vehicles, int low, int high) {
-        int pivot = vehicles[high].mileage; // Choose last element as pivot
-        int i = low - 1; // Index of smaller element
-
-        for (int j = low; j < high; j++) {
-            // If current element is smaller than or equal to pivot
-            if (vehicles[j].mileage <= pivot) {
-                i++;
-                swapVehicles(vehicles, i, j);
-            }
-        }
-        swapVehicles(vehicles, i + 1, high); // Place pivot in correct position
-        return i + 1; // Return partition index
     }
 
     // Merge sort vehicles by driver name
@@ -1289,92 +1261,18 @@ public class Main {
             System.out.println("Vehicles before sorting:");
             displayVehicleArray(vehicles, "Current Order");
 
-            // Record start time for performance analysis
-            long startTime = System.nanoTime();
-            
-            // Perform merge sort
-            mergeSortByDriverName(vehicles, 0, vehicles.length - 1);
-            
-            long endTime = System.nanoTime();
-            double sortTime = (endTime - startTime) / 1_000_000.0; // Convert to milliseconds
+            // Use custom MergeSort class with performance tracking
+            MergeSort.MergeSortResult result = MergeSort.sortWithPerformanceTracking(vehicles, "driverName");
 
-            System.out.println("\nSuccess: Merge Sort completed in: " + String.format("%.3f", sortTime) + " ms");
+            System.out.printf("\n✓ Merge Sort completed in: %.3f ms%n", result.sortTimeMs);
             System.out.println("Vehicles sorted by driver name (alphabetical):");
-            displayVehicleArray(vehicles, "Sorted by Driver Name");
+            displayVehicleArray(result.sortedVehicles, "Sorted by Driver Name");
             pauseForUser();
             
         } catch (Exception e) {
             System.out.println("Error: Error sorting vehicles by driver name: " + e.getMessage());
             pauseForUser();
         }
-    }
-
-    // Merge sort recursive implementation
-    private static void mergeSortByDriverName(Vehicle[] vehicles, int left, int right) {
-        if (left < right) {
-            // Find the middle point to divide the array into two halves
-            int middle = left + (right - left) / 2;
-
-            // Recursively sort first and second halves
-            mergeSortByDriverName(vehicles, left, middle);      // Sort left half
-            mergeSortByDriverName(vehicles, middle + 1, right); // Sort right half
-
-            // Merge the sorted halves
-            mergeByDriverName(vehicles, left, middle, right);
-        }
-    }
-
-    // Merge method for merge sort
-    private static void mergeByDriverName(Vehicle[] vehicles, int left, int middle, int right) {
-        // Calculate sizes of two sub-arrays to be merged
-        int leftSize = middle - left + 1;
-        int rightSize = right - middle;
-
-        // Create temporary arrays
-        Vehicle[] leftArray = new Vehicle[leftSize];
-        Vehicle[] rightArray = new Vehicle[rightSize];
-
-        // Copy data to temporary arrays
-        for (int i = 0; i < leftSize; i++)
-            leftArray[i] = vehicles[left + i];
-        for (int j = 0; j < rightSize; j++)
-            rightArray[j] = vehicles[middle + 1 + j];
-
-        // Merge the temporary arrays back into vehicles[left..right]
-        int i = 0, j = 0, k = left; // Initial indexes of left, right, and merged arrays
-
-        while (i < leftSize && j < rightSize) {
-            // Compare driver names lexicographically (alphabetical order)
-            if (leftArray[i].driverId.compareTo(rightArray[j].driverId) <= 0) {
-                vehicles[k] = leftArray[i];
-                i++;
-            } else {
-                vehicles[k] = rightArray[j];
-                j++;
-            }
-            k++;
-        }
-
-        // Copy remaining elements of leftArray[], if any
-        while (i < leftSize) {
-            vehicles[k] = leftArray[i];
-            i++;
-            k++;
-        }
-
-        // Copy remaining elements of rightArray[], if any
-        while (j < rightSize) {
-            vehicles[k] = rightArray[j];
-            j++;
-            k++;
-        }
-    }
-
-    // Helper method to swap two vehicles in array
-    private static void swapVehicles(Vehicle[] vehicles, int i, int j) {
-        Vehicle temp = vehicles[i];
-        vehicles[i] = vehicles[j];
-        vehicles[j] = temp;
     }
 
     // Helper method to display vehicle array in formatted table
