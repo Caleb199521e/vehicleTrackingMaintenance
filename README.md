@@ -192,13 +192,6 @@ All outputs use consistent table formatting:
 
 This project demonstrates **pure custom data structure implementations**:
 
-- No `java.util.ArrayList`
-- No `java.util.LinkedList`  
-- No `java.util.Queue`
-- No `java.util.PriorityQueue`
-- No `java.util.HashMap`
-- No `java.util.TreeMap`
-
 - Custom Binary Search Tree
 - Custom Circular Queues
 - Custom Priority Queue (Min-Heap)
@@ -225,19 +218,7 @@ This project demonstrates **pure custom data structure implementations**:
 - **Menu-Driven Interface**: Clean navigation with back options
 - **Real-time Data Updates**: Changes immediately reflect in file storage
 - **Comprehensive Reporting**: Detailed analytics and system reports
-- **Ghana-Localized**: Currency, locations, and terminology for Ghana
-- **Academic Standards**: Pure algorithmic implementations without Java Collections
 
-## Academic Requirements Met
-
-- **Custom Data Structures**: All major data structures coded from scratch
-- **Algorithm Implementation**: Search, sort, and heap algorithms implemented
-- **Object-Oriented Design**: Proper encapsulation and modularity
-- **Package Organization**: Clean separation of concerns with `datastructures` package
-- **No Collections Framework**: Pure algorithmic implementations
-- **Professional Standards**: Table-formatted output and robust error handling
-- **Real-world Application**: Practical vehicle tracking system with Ghana-specific features
-- **Clean Project Structure**: Organized data files and source code separation
 
 ## System Menu Structure
 
@@ -278,4 +259,9 @@ MAIN MENU
 └── 8. Exit
 ```
 
-This organization demonstrates mastery of fundamental data structures and algorithms without relying on built-in Java collections, making it perfect for academic computer science coursework while providing a practical, real-world application.
+Team Members 
+Caleb Ampong (11354029) - Team Lead 
+Sumaila Saida ()
+Eric Adu Osei ()
+Pamela Pearl Boamah() 
+Prince Adofo()
