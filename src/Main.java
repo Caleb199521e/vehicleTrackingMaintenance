@@ -822,20 +822,20 @@ public class Main {
             if (task.vehicleNumber.equals(vehicleReg)) {
                 if (task.mileage <= 0) {
                     if (!hasOverdueTasks) {
-                        System.out.println("\n🚨 MAINTENANCE ALERT 🚨");
+                        System.out.println("\n*** MAINTENANCE ALERT ***");
                         hasOverdueTasks = true;
                     }
                     if (task.mileage <= -500) {
-                        System.out.println("  ⚠️  CRITICAL: Vehicle " + vehicleReg + " is " + Math.abs(task.mileage) + " km OVERDUE for maintenance!");
+                        System.out.println("  CRITICAL: Vehicle " + vehicleReg + " is " + Math.abs(task.mileage) + " km OVERDUE for maintenance!");
                     } else if (task.mileage <= 0) {
-                        System.out.println("  🔧 URGENT: Vehicle " + vehicleReg + " needs immediate maintenance!");
+                        System.out.println("  URGENT: Vehicle " + vehicleReg + " needs immediate maintenance!");
                     }
                 }
             }
         }
         
         if (hasOverdueTasks) {
-            System.out.println("  💡 Recommendation: Schedule maintenance immediately to prevent breakdowns.");
+            System.out.println("  Recommendation: Schedule maintenance immediately to prevent breakdowns.");
         }
     }
 
@@ -913,9 +913,9 @@ public class Main {
         MaintenanceTask.displayTableFooter();
         
         if (mileage <= 1000) {
-            System.out.println("WARNING:  WARNING: This vehicle needs urgent maintenance!");
+            System.out.println("WARNING: This vehicle needs urgent maintenance!");
         } else if (mileage <= 2000) {
-            System.out.println("NOTICE: NOTICE: This vehicle will need maintenance soon.");
+            System.out.println("NOTICE: This vehicle will need maintenance soon.");
         }
     }
 
