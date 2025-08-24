@@ -18,6 +18,7 @@ public class Main {
     // Main method - entry point of the application
     public static void main(String[] args) {
         displayWelcomeMessage(); // Show welcome screen
+        loadDataAtStartup();     // Automatically load all data files
         showMenu();              // Start interactive menu system
     }
 
@@ -34,6 +35,48 @@ public class Main {
         System.out.println("=".repeat(60));
         System.out.println("Start by adding vehicles and drivers to get started!");
         System.out.println();
+    }
+
+    // Automatically load all data files at system startup
+    private static void loadDataAtStartup() {
+        System.out.println("Initializing System - Loading Data Files...");
+        System.out.println("-".repeat(50));
+        
+        try {
+            // Clear existing data structures
+            vehicleTree = new VehicleTree();
+            driverQueue = new DriverQueue();
+            deliveryQueue = new DeliveryQueue();
+            maintenanceScheduler = new MaintenanceScheduler();
+            
+            // Load data from files with progress indicators
+            System.out.print("Loading vehicles... ");
+            loadVehiclesFromFile();
+            System.out.println("Done");
+            
+            System.out.print("Loading drivers... ");
+            loadDriversFromFile();
+            System.out.println("Done");
+            
+            System.out.print("Loading deliveries... ");
+            loadDeliveriesFromFile();
+            System.out.println("Done");
+            
+            System.out.print("Loading maintenance records... ");
+            loadMaintenanceFromFile();
+            System.out.println("Done");
+            
+            System.out.println("-".repeat(50));
+            System.out.println("System Ready! All data loaded successfully.");
+            System.out.println();
+            
+        } catch (Exception e) {
+            System.out.println("\nWarning: Some data files could not be loaded.");
+            System.out.println("Reason: " + e.getMessage());
+            System.out.println("The system will start with empty data structures.");
+            System.out.println("You can manually load data later from File Storage menu.");
+            System.out.println();
+        }
     }
 
     // Main menu system - displays main categories and handles navigation
