@@ -466,7 +466,7 @@ public class Main {
                 return;
             }
             
-            System.out.print("Enter Assigned Driver ID (or press Enter if unassigned): ");
+            System.out.print("Enter Assigned Driver ID (e.g., DRV001, or press Enter if unassigned): ");
             String driverId = scanner.nextLine().trim();
             if (driverId.isEmpty()) {
                 driverId = "UNASSIGNED";
@@ -474,6 +474,13 @@ public class Main {
             
             Vehicle newVehicle = new Vehicle(regNumber, type, mileage, fuelUsage, driverId);
             vehicleTree.insert(newVehicle);
+            
+            // Automatically save the updated vehicle data to file
+            try {
+                saveVehiclesToFile();
+            } catch (IOException e) {
+                System.out.println("Warning: Vehicle added but failed to save to file: " + e.getMessage());
+            }
             
             System.out.println("\nSuccess: Vehicle added successfully!");
             newVehicle.displayInfo();
@@ -579,7 +586,22 @@ public class Main {
         try {
             System.out.println("\n=== Add New Driver ===");
             
-            String driverId = getStringInputSafe("Enter Driver ID (e.g., D01): ");
+            String driverId = getStringInputSafe("Enter Driver ID (e.g., DRV001): ");
+            
+            // Check for duplicate driver ID
+            if (driverQueue.driverExists(driverId)) {
+                System.out.println("Error: Driver with ID '" + driverId + "' already exists in the system!");
+                Driver existingDriver = driverQueue.findDriverById(driverId);
+                if (existingDriver != null) {
+                    System.out.println("Existing driver details:");
+                    Driver.displayTableHeader();
+                    existingDriver.displayInfo();
+                    Driver.displayTableFooter();
+                }
+                pauseForUser();
+                return;
+            }
+            
             String name = getStringInputSafe("Enter Driver Name: ");
             
             System.out.print("Enter Years of Experience: ");
@@ -589,6 +611,13 @@ public class Main {
             
             Driver newDriver = new Driver(driverId, name, experience, location);
             driverQueue.enqueue(newDriver);
+            
+            // Automatically save the updated driver data to file
+            try {
+                saveDriversToFile();
+            } catch (IOException e) {
+                System.out.println("Warning: Driver added but failed to save to file: " + e.getMessage());
+            }
             
             System.out.println("\nSuccess: Driver added successfully!");
             Driver.displayTableHeader();
@@ -638,6 +667,21 @@ public class Main {
             System.out.println("\n=== Create Delivery Record ===");
             
             String packageId = getStringInputSafe("Enter Package ID: ");
+            
+            // Check for duplicate package ID
+            if (deliveryQueue.deliveryExists(packageId)) {
+                System.out.println("Error: Delivery with Package ID '" + packageId + "' already exists in the system!");
+                Delivery existingDelivery = deliveryQueue.findDeliveryById(packageId);
+                if (existingDelivery != null) {
+                    System.out.println("Existing delivery details:");
+                    Delivery.displayTableHeader();
+                    existingDelivery.displayInfo();
+                    Delivery.displayTableFooter();
+                }
+                pauseForUser();
+                return;
+            }
+            
             String origin = getStringInputSafe("Enter Origin Location: ");
             String destination = getStringInputSafe("Enter Destination: ");
             String vehicleReg = getStringInputSafe("Enter Vehicle Registration Number: ");
@@ -651,13 +695,20 @@ public class Main {
                 return;
             }
             
-            String driverId = getStringInputSafe("Enter Driver ID: ");
+            String driverId = getStringInputSafe("Enter Driver ID (e.g., DRV001): ");
             String deliveryTime = getStringInputSafe("Enter Delivery Time: ");
             
             Delivery delivery = new Delivery(packageId, origin, destination, vehicleReg, driverId, deliveryTime);
             
             // Add delivery to queue
             deliveryQueue.enqueue(delivery);
+            
+            // Automatically save the updated delivery data to file
+            try {
+                saveDeliveriesToFile();
+            } catch (IOException e) {
+                System.out.println("Warning: Delivery added but failed to save to file: " + e.getMessage());
+            }
             
             System.out.println("\nSuccess: Delivery record created and added to queue successfully!");
             Delivery.displayTableHeader();
@@ -725,15 +776,66 @@ public class Main {
                 if (vehicle != null) {
                     int currentMileage = vehicle.mileage;
                     vehicle.mileage = currentMileage + additionalMileage;
+                    
+                    // Automatically save the updated vehicle data
+                    try {
+                        saveVehiclesToFile();
+                    } catch (IOException e) {
+                        System.out.println("Warning: Mileage updated but failed to save to file: " + e.getMessage());
+                    }
+                    
+                    // Update maintenance schedules for this vehicle
+                    maintenanceScheduler.updateTasksForVehicle(delivery.assignedVehicle, additionalMileage);
+                    
+                    // Automatically save the updated maintenance data
+                    try {
+                        saveMaintenanceToFile();
+                    } catch (IOException e) {
+                        System.out.println("Warning: Maintenance schedules updated but failed to save to file: " + e.getMessage());
+                    }
+                    
                     System.out.println("Success: Vehicle mileage updated:");
                     System.out.println("  Vehicle: " + delivery.assignedVehicle);
                     System.out.println("  Previous mileage: " + currentMileage + " km");
                     System.out.println("  Additional mileage: " + additionalMileage + " km");
                     System.out.println("  New mileage: " + vehicle.mileage + " km");
+                    
+                    // Check if any maintenance is now due or overdue
+                    checkForOverdueMaintenance(delivery.assignedVehicle);
                 } else {
                     System.out.println("Error: Vehicle not found for mileage update.");
                 }
+            } else if (additionalMileage == 0) {
+                System.out.println("No mileage added - vehicle mileage remains unchanged.");
+            } else {
+                System.out.println("Error: Mileage cannot be negative!");
             }
+        }
+    }
+
+    // Check if a vehicle has overdue maintenance and display warnings
+    private static void checkForOverdueMaintenance(String vehicleReg) {
+        MaintenanceTask[] allTasks = maintenanceScheduler.getAllTasks();
+        boolean hasOverdueTasks = false;
+        
+        for (MaintenanceTask task : allTasks) {
+            if (task.vehicleNumber.equals(vehicleReg)) {
+                if (task.mileage <= 0) {
+                    if (!hasOverdueTasks) {
+                        System.out.println("\n🚨 MAINTENANCE ALERT 🚨");
+                        hasOverdueTasks = true;
+                    }
+                    if (task.mileage <= -500) {
+                        System.out.println("  ⚠️  CRITICAL: Vehicle " + vehicleReg + " is " + Math.abs(task.mileage) + " km OVERDUE for maintenance!");
+                    } else if (task.mileage <= 0) {
+                        System.out.println("  🔧 URGENT: Vehicle " + vehicleReg + " needs immediate maintenance!");
+                    }
+                }
+            }
+        }
+        
+        if (hasOverdueTasks) {
+            System.out.println("  💡 Recommendation: Schedule maintenance immediately to prevent breakdowns.");
         }
     }
 
@@ -782,8 +884,28 @@ public class Main {
             return;
         }
         
+        // Check for duplicate maintenance task
+        if (maintenanceScheduler.taskExists(vehicleReg, mileage)) {
+            System.out.println("Error: Maintenance task for vehicle '" + vehicleReg + "' with mileage " + mileage + " already exists!");
+            MaintenanceTask existingTask = maintenanceScheduler.findTask(vehicleReg, mileage);
+            if (existingTask != null) {
+                System.out.println("Existing maintenance task details:");
+                MaintenanceTask.displayTableHeader();
+                existingTask.displayInfo();
+                MaintenanceTask.displayTableFooter();
+            }
+            return;
+        }
+        
         MaintenanceTask task = new MaintenanceTask(vehicleReg, mileage);
         maintenanceScheduler.addTask(task);
+        
+        // Automatically save the updated maintenance data to file
+        try {
+            saveMaintenanceToFile();
+        } catch (IOException e) {
+            System.out.println("Warning: Maintenance task added but failed to save to file: " + e.getMessage());
+        }
         
         System.out.println("\nSuccess: Maintenance task scheduled successfully!");
         MaintenanceTask.displayTableHeader();

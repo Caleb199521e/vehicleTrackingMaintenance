@@ -66,6 +66,28 @@ public class DeliveryQueue {
         return count == 0;
     }
 
+    // Check if a delivery with the given package ID already exists
+    public boolean deliveryExists(String packageId) {
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            if (queue[index].packageId.equals(packageId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Find a delivery by package ID
+    public Delivery findDeliveryById(String packageId) {
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            if (queue[index].packageId.equals(packageId)) {
+                return queue[index];
+            }
+        }
+        return null;
+    }
+
     // Clear all deliveries from queue
     public void clear() {
         front = 0;

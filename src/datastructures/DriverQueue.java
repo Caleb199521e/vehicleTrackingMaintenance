@@ -65,6 +65,28 @@ public class DriverQueue {
         return count == 0;
     }
 
+    // Check if a driver with the given ID already exists
+    public boolean driverExists(String driverId) {
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            if (drivers[index].driverId.equals(driverId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Find a driver by ID
+    public Driver findDriverById(String driverId) {
+        for (int i = 0; i < count; i++) {
+            int index = (front + i) % MAX;
+            if (drivers[index].driverId.equals(driverId)) {
+                return drivers[index];
+            }
+        }
+        return null;
+    }
+
     // Clear all drivers from queue
     public void clear() {
         front = 0;

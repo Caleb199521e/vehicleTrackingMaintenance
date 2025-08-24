@@ -91,6 +91,46 @@ public class MaintenanceScheduler {
         return tasks;
     }
 
+    // Check if an identical maintenance task already exists (same vehicle and same mileage)
+    public boolean taskExists(String vehicleNumber, int mileage) {
+        for (int i = 0; i < size; i++) {
+            if (heap[i].vehicleNumber.equals(vehicleNumber) && heap[i].mileage == mileage) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Find a maintenance task by vehicle number and mileage
+    public MaintenanceTask findTask(String vehicleNumber, int mileage) {
+        for (int i = 0; i < size; i++) {
+            if (heap[i].vehicleNumber.equals(vehicleNumber) && heap[i].mileage == mileage) {
+                return heap[i];
+            }
+        }
+        return null;
+    }
+
+    // Update all maintenance tasks for a vehicle when its mileage increases
+    public void updateTasksForVehicle(String vehicleNumber, int additionalMileage) {
+        boolean updated = false;
+        for (int i = 0; i < size; i++) {
+            if (heap[i].vehicleNumber.equals(vehicleNumber)) {
+                int oldMileage = heap[i].mileage;
+                heap[i].mileage = Math.max(0, oldMileage - additionalMileage);
+                updated = true;
+            }
+        }
+        
+        if (updated) {
+            // Re-heapify the entire heap to maintain priority order
+            for (int i = size / 2 - 1; i >= 0; i--) {
+                heapifyDown(i);
+            }
+            System.out.println("Maintenance schedules updated for vehicle: " + vehicleNumber);
+        }
+    }
+
     // Clear all tasks from scheduler
     public void clear() {
         size = 0;
